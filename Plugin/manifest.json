@@ -3,7 +3,14 @@
     "name": "Fact verifier",
     "description": "Provides user interface for fact checking articles",
     "version": "1.0",
-    "permissions": ["storage", "tabs", "browsingData", "search", "sidePanel"],
+    "permissions": [
+        "storage", 
+        "tabs", 
+        "browsingData", 
+        "search", 
+        "sidePanel", 
+        "http://127.0.0.1:5000"
+    ],
     "action": {
         "default_title": "Click to open panel",
         "default_popup": "default_popup.html",
