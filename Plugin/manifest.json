@@ -8,8 +8,10 @@
         "tabs", 
         "browsingData", 
         "search", 
-        "sidePanel", 
-        "http://127.0.0.1:5000"
+        "sidePanel"
+    ],
+    "host_permissions": [
+        "http://127.0.0.1:5000/"
     ],
     "action": {
         "default_title": "Click to open panel",
