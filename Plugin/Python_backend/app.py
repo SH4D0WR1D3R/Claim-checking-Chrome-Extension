@@ -2,9 +2,17 @@
 
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+from dotenv import load_dotenv
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
+
+load_dotenv()
+
+# DEFAULT URL
+@app.route("/")
+def default():
+    return jsonify({'message': 'Waiting for processes to run'})
 
 # @app.route('/process_html', methods=['POST']) # specifies the URL endpoint and the accepted HTTP method
 # def process_html():
@@ -22,9 +30,9 @@ def get_data():
     data = {'example': 'This is your processed data'}
     return jsonify(data)
 
-@app.route("/")
-def hi():
-    return "Hi"
+# @app.route("/")
+# def hi():
+#     return "Hi"
 
 if __name__ == '__main__':
     app.run(debug=True, host='127.0.0.1', port=5000)
