@@ -18,3 +18,19 @@
 //         chrome.sidePanel.open({windowId: tab.windowId});
 //     }    
 // });
+
+// chrome.runtime.onInstalled.addListener(() => {
+//     console.log('Extension Installed');
+// });
+
+chrome.action.onClicked.addListener(async () => {
+    const [tab] = await chrome.tabs.query({ active: true, currentWindow: true});
+    chrome.scripting.executeScript({
+        target: {tabId: tab.id},
+        function: () => {
+            const htmlContent = document.documentElement.outerHTML;
+            chrome.runtime.sendMessage({htmlContent});
+        }
+    });
+    console.log('HTML Content:', html[0].result);
+});

@@ -8,7 +8,9 @@
         "tabs", 
         "browsingData", 
         "search", 
-        "sidePanel"
+        "sidePanel",
+        "activeTab",
+        "scripting"
     ],
     "host_permissions": [
         "http://127.0.0.1:5000/"
@@ -23,5 +25,11 @@
     },
     "background": {
         "service_worker": "service_worker.js"
-    }
+    },
+    "content_scripts": [
+        {
+            "matches": ["<all_urls>"],
+            "js": ["contentScript.js"]
+        }
+    ]
 }
