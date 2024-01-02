@@ -15,7 +15,9 @@ fetch(serverUrl).then(response => response.json()).then(data => {
 // Listen for messages from contentScript.js
 // this section of code is waiting for the html content of the active tab
 chrome.runtime.onConnect.addListener((port) => {
+    // checks the port name is the one with the html content
     if (port.name === 'htmlContent') {
+        // when receive a message, grab the html content from said message
         port.onMessage.addListener((msg) => {
             const htmlContent = msg.htmlContent;
             console.log('HTML Content: ', htmlContent);
