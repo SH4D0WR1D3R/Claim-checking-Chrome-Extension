@@ -15,15 +15,24 @@ def default():
     return jsonify({'message': 'Waiting for processes to run'})
 
 @app.route("/process_html", methods=['POST'])
+# this method needs to get the information from side_panel.js - unsure how
 def process_html():
-    if request.method == 'POST':
-        html_content = request.json.get('html')
-        # insert code here to run claim detection?
-        # probably need a global object to handle claim detection?
-        # might be a way to make this code neater - class?
-        print("Running process_html")
-        print(html_content)
-        return jsonify({'message': 'HTML processed successfully'})
+    # PUT instead of POST
+    # POST is used to create data
+    # PUT is used to update data
+    # if request.method == 'POST':
+    #     html_content = request.json.get('html')
+    #     # insert code here to run claim detection?
+    #     # probably need a global object to handle claim detection?
+    #     # might be a way to make this code neater - class?
+    #     print("Running process_html")
+    #     print(html_content)
+    #     return jsonify({'message': 'HTML processed successfully'})
+    data = request.get_json()
+    html = data.get('html')
+    # print("Received HTML content from chrome extension")
+    print("HTML Content: ", html)
+    return jsonify({'message': 'HTML processed successfully'})
 
 
 if __name__ == '__main__':

@@ -21,6 +21,18 @@ chrome.runtime.onConnect.addListener((port) => {
         port.onMessage.addListener((msg) => {
             const htmlContent = msg.htmlContent;
             console.log('HTML Content: ', htmlContent);
+            fetch(serverUrl.concat('process_html'), {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({html: htmlContent})
+            }).then(response => {
+                console.log('HTML content sent to Python backend');
+            }).catch(error => {
+                console.error('Error sending HTML content: ', error);
+            });
         });
     }
 });
+

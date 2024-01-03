@@ -24,10 +24,6 @@ class claim_detection:
     def get_article_html(self):
         return self.article_html
     
-    
-    def filter_html(self):
-        return None
-    
     # method to take an input of a bunch of sentences and return those sentences with ratings of importance as a claim/to be verified
     # have now realised might not be good to use this
     # will continue to use this but it doesn't have the focus i'd like
@@ -45,5 +41,13 @@ class claim_detection:
         else:
             print(f"Request failed with status code: {api_response.status_code}")
 
-temp_object = claim_detection()
-temp_object.filter_sentences("the earth is flat. donald trump is banned from running in 2 states.")
+    # method to take the html of the article and return a string of sentences of the article text
+    # beautiful soup
+    # probably need to store the html string in a file
+    def fetch_article_text(self):
+        # better to refer to the html as a file rather than a string - might need to adjust the method that fetches HTML
+        return None
+
+# testing of methods
+# temp_object = claim_detection()
+# temp_object.filter_sentences("the earth is flat. donald trump is banned from running in 2 states.")
