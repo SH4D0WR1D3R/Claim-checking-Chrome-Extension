@@ -3,11 +3,14 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from dotenv import load_dotenv
+from bs4 import BeautifulStoneSoup
+import claim_detection
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
 load_dotenv()
+claim_detection_object = claim_detection.claim_detection()
 
 # DEFAULT URL
 @app.route("/")
@@ -20,18 +23,23 @@ def process_html():
     # PUT instead of POST
     # POST is used to create data
     # PUT is used to update data
-    # if request.method == 'POST':
-    #     html_content = request.json.get('html')
-    #     # insert code here to run claim detection?
-    #     # probably need a global object to handle claim detection?
-    #     # might be a way to make this code neater - class?
-    #     print("Running process_html")
-    #     print(html_content)
-    #     return jsonify({'message': 'HTML processed successfully'})
     data = request.get_json()
     html = data.get('html')
-    # print("Received HTML content from chrome extension")
-    print("HTML Content: ", html)
+
+    claim_detection_object.set_article_html(html)
+
+    # move html to a file
+    claim_detection_object.convert_to_file()
+
+    # filter html in file and store in another file?
+    title, article_content = claim_detection_object.filter_article_html()
+
+    # now have sentences of the article - article_content
+    # do i get the rankings for sentences here as well?
+
+    print("Title: ", title)
+    print("Article Content: ", article_content)
+    
     return jsonify({'message': 'HTML processed successfully'})
 
 

@@ -7,10 +7,12 @@ from dotenv import load_dotenv
 import requests
 import json
 import os
+from bs4 import BeautifulSoup
 
 class claim_detection:
     article_html = None
     processed_html = None
+    html_file_name = "html_file.html"
 
     def __init__(self):
         load_dotenv()
@@ -41,12 +43,34 @@ class claim_detection:
         else:
             print(f"Request failed with status code: {api_response.status_code}")
 
+
+    def convert_to_file(self):
+        # check if file already exists? 
+        html_file = open(self.html_file_name, "w")
+        html_file.write(self.article_html)
+        html_file.close()
+
     # method to take the html of the article and return a string of sentences of the article text
     # beautiful soup
     # probably need to store the html string in a file
-    def fetch_article_text(self):
-        # better to refer to the html as a file rather than a string - might need to adjust the method that fetches HTML
-        return None
+    def filter_article_html(self):
+        # check if file exists
+        with open(self.html_file_name, "r") as temp_html_file:
+            html_content = temp_html_file.read()
+
+        html_soup = BeautifulSoup(html_content, 'html.parser')
+        title = html_soup.find('title').get_text()
+        article_content = ''
+        article_body = html_soup.find('article')
+        if article_body:
+            paragraphs = article_body.find_all('p')
+            for paragraph in paragraphs:
+                article_content += paragraph.text
+
+        # print("Title: ", title)
+        # print("Article Content: ", article_content)
+        self.processed_html = article_content
+        return title, article_content
 
 # testing of methods
 # temp_object = claim_detection()
