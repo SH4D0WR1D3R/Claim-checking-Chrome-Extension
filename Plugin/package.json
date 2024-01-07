@@ -3,6 +3,6 @@
     "chrome-types": "^0.1.246"
   },
   "devDependencies": {
-    "nodemon": "^1.18.10"
+    "nodemon": "^3.0.2"
   }
 }
