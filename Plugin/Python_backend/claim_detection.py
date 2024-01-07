@@ -26,30 +26,6 @@ class claim_detection:
     def get_article_html(self):
         return self.article_html
     
-    # method to take an input of a bunch of sentences and return those sentences with ratings of importance as a claim/to be verified
-    # have now realised might not be good to use this
-    # will continue to use this but it doesn't have the focus i'd like
-    # /api/v2/score/text/sentences/<input_text> - input text is a block of text, where sentences are separated by full stop
-    def filter_sentences(self, sentences):
-        # sentences needs to be a string to be passed into the api endpoint
-        # so assume sentences is a string type and not a file type
-        endpoint_url = f"https://idir.uta.edu/claimbuster/api/v2/score/text/sentences/{sentences}"
-        # should do a check on sentences
-        request_headers = {"x-api-key": self.api_key}
-        api_response = requests.get(url=endpoint_url, headers=request_headers)
-        if api_response.status_code == 200:
-            data = api_response.json()
-            print(data)
-        else:
-            print(f"Request failed with status code: {api_response.status_code}")
-
-
-    def convert_to_file(self):
-        # check if file already exists? 
-        html_file = open(self.html_file_name, "w")
-        html_file.write(self.article_html)
-        html_file.close()
-
     # method to take the html of the article and return a string of sentences of the article text
     # beautiful soup
     # probably need to store the html string in a file
@@ -67,10 +43,35 @@ class claim_detection:
             for paragraph in paragraphs:
                 article_content += paragraph.text
 
-        # print("Title: ", title)
-        # print("Article Content: ", article_content)
         self.processed_html = article_content
         return title, article_content
+    
+    # method to take an input of a bunch of sentences and return those sentences with ratings of importance as a claim/to be verified
+    # have now realised might not be good to use this
+    # will continue to use this but it doesn't have the focus i'd like
+    # /api/v2/score/text/sentences/<input_text> - input text is a block of text, where sentences are separated by full stop
+    def filter_sentences(self):
+        # sentences needs to be a string to be passed into the api endpoint
+        # so assume sentences is a string type and not a file type
+        self.processed_html = self.processed_html.replace(".", ". ") # to ensure it works with the API being used
+        endpoint_url = f"https://idir.uta.edu/claimbuster/api/v2/score/text/sentences/{self.processed_html}"
+        # should do a check on sentences
+        request_headers = {"x-api-key": self.api_key}
+        api_response = requests.get(url=endpoint_url, headers=request_headers)
+        if api_response.status_code == 200:
+            data = api_response.json()
+            return data
+        else:
+            print(f"Request failed with status code: {api_response.status_code}")
+
+
+    def convert_to_file(self):
+        # check if file already exists? 
+        html_file = open(self.html_file_name, "w")
+        html_file.write(self.article_html)
+        html_file.close()
+
+    
 
 # testing of methods
 # temp_object = claim_detection()

@@ -36,9 +36,13 @@ def process_html():
 
     # now have sentences of the article - article_content
     # do i get the rankings for sentences here as well?
+    ranked_sentences = claim_detection_object.filter_sentences()
+    print(ranked_sentences)
 
-    print("Title: ", title)
-    print("Article Content: ", article_content)
+    # print("Title: ", title)
+    # print("Article Content: ", article_content)
+
+    # trigger rest of process here? evidence retrieval
     
     return jsonify({'message': 'HTML processed successfully'})
 
