@@ -13,6 +13,7 @@ class claim_detection:
     article_html = None
     processed_html = None
     html_file_name = "html_file.html"
+    ranked_sentences = {}
 
     def __init__(self):
         load_dotenv()
@@ -25,6 +26,9 @@ class claim_detection:
     
     def get_article_html(self):
         return self.article_html
+    
+    def get_ranked_sentences(self):
+        return self.ranked_sentences
     
     # method to take the html of the article and return a string of sentences of the article text
     # beautiful soup
@@ -59,8 +63,8 @@ class claim_detection:
         request_headers = {"x-api-key": self.api_key}
         api_response = requests.get(url=endpoint_url, headers=request_headers)
         if api_response.status_code == 200:
-            data = api_response.json()
-            return data
+            self.ranked_sentences = api_response.json()
+            return self.ranked_sentences
         else:
             print(f"Request failed with status code: {api_response.status_code}")
 
@@ -70,6 +74,31 @@ class claim_detection:
         html_file = open(self.html_file_name, "w")
         html_file.write(self.article_html)
         html_file.close()
+
+    def get_top_sentences(self):
+        # do i want sentences scoring over a certain threshold or do i want top 10?
+        # maybe prioritise threshold, then show first 10. then have a more option
+        # threshold of 0.5
+        # example results
+        # {
+        # "version": "2.0",
+        # "sentences": "i am human. boris johnson is not human."
+        # "results": [
+        # {
+        # "text": "i am human.",
+        # "index": 0,
+        # "score": 0.1279718227,
+        # },
+        # {
+        # "text": "boris johnson is not human.",
+        # "index": 1,
+        # "score": 0.2378060978,
+        # }
+        #],
+        # "url": "api/v2/score/text/sentences"
+        # }
+        return None
+
 
     
 
