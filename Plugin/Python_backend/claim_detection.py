@@ -75,7 +75,7 @@ class claim_detection:
         html_file.write(self.article_html)
         html_file.close()
 
-    def get_top_sentences(self):
+    def find_top_sentences(self):
         # do i want sentences scoring over a certain threshold or do i want top 10?
         # maybe prioritise threshold, then show first 10. then have a more option
         # threshold of 0.5
@@ -97,7 +97,16 @@ class claim_detection:
         #],
         # "url": "api/v2/score/text/sentences"
         # }
-        return None
+        print("RESULTS ", self.ranked_sentences.get("results"))
+        results = self.ranked_sentences.get("results")
+        top_results = []
+        for result in results:
+            if result.get("score") > 0.5:
+                top_results += [result]
+
+        print("TOP RESULTS ", top_results)
+        return top_results
+        # return None
 
 
     

@@ -32,17 +32,20 @@ def process_html():
     claim_detection_object.convert_to_file()
 
     # filter html in file and store in another file?
-    title, article_content = claim_detection_object.filter_article_html()
+    title, article_content = claim_detection_object.filter_article_html() # WHY IS IT CUTTING OUT THE END OF THE ARTICLE? (list)
+    # print("ARTICLE : ", article_content)
 
     # now have sentences of the article - article_content
     # do i get the rankings for sentences here as well?
     ranked_sentences = claim_detection_object.filter_sentences()
-    print(ranked_sentences)
+    # print(ranked_sentences)
 
     # print("Title: ", title)
     # print("Article Content: ", article_content)
 
     # trigger rest of process here? evidence retrieval
+
+    claim_detection_object.find_top_sentences()
     
     return jsonify({'message': 'HTML processed successfully'})
 

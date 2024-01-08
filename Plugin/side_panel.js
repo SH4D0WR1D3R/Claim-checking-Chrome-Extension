@@ -36,3 +36,6 @@ chrome.runtime.onConnect.addListener((port) => {
     }
 });
 
+
+// check if checkClaimButton has been clicked
+// if so, send contents of claimInput to Python backend
