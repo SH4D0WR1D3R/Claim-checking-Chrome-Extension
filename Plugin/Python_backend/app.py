@@ -18,38 +18,29 @@ def default():
     return jsonify({'message': 'Waiting for processes to run'})
 
 @app.route("/process_html", methods=['POST'])
-# this method needs to get the information from side_panel.js - unsure how
 def process_html():
-    # PUT instead of POST
-    # POST is used to create data
-    # PUT is used to update data
+    # get the html from the request
     data = request.get_json()
     html = data.get('html')
 
+    # set the pure html in the claim_detection object
     claim_detection_object.set_article_html(html)
 
     # move html to a file
     claim_detection_object.convert_to_file()
 
-    # filter html in file and store in another file?
-    title, article_content = claim_detection_object.filter_article_html() # WHY IS IT CUTTING OUT THE END OF THE ARTICLE? (list)
-    # print("ARTICLE : ", article_content)
+    # filter the pure html down to just the article contents
+    title, article_content = claim_detection_object.filter_article_html() # TO DO: WHY IS IT CUTTING OUT THE END OF THE ARTICLE? (list)
 
-    # now have sentences of the article - article_content
-    # do i get the rankings for sentences here as well?
+    # rank each of the sentences in the article
     ranked_sentences = claim_detection_object.filter_sentences()
-    # print(ranked_sentences)
-
-    # print("Title: ", title)
-    # print("Article Content: ", article_content)
-
-    # trigger rest of process here? evidence retrieval
 
     claim_detection_object.find_top_sentences()
+
+    # trigger rest of process here? evidence retrieval
     
     return jsonify({'message': 'HTML processed successfully'})
 
 
 if __name__ == '__main__':
     app.run(debug=True, host='127.0.0.1', port=5000)
-    # app.run(debug=True) # Run flask app
