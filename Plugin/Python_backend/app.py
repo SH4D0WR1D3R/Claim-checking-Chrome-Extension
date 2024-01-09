@@ -35,6 +35,7 @@ def process_html():
     # rank each of the sentences in the article
     ranked_sentences = claim_detection_object.filter_sentences()
 
+    # get sentences with scores over a defined threshold - means they are claim worthy/worth verifying
     claim_detection_object.find_top_sentences()
 
     # trigger rest of process here? evidence retrieval
