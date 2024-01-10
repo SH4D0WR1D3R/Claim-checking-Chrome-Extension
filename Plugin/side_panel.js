@@ -39,3 +39,23 @@ chrome.runtime.onConnect.addListener((port) => {
 
 // check if checkClaimButton has been clicked
 // if so, send contents of claimInput to Python backend
+function fetchClaimInput(){
+    var claimInput = document.getElementById("claimInput").value;
+    console.log("Fetched claim input: ", claimInput);
+    document.getElementById("claimInput").value = ""; // clear input field
+    // send claimInput to Python backend
+    fetch(serverUrl.concat('process_claim'), {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({claim: claimInput})
+    }).then(response => {
+        console.log('Claim sent to Python backend');
+    }).catch(error => {
+        console.error('Error sending claim: ', error);
+    });
+}
+
+// document.getElementById("demo").addEventListener("click", myFunction);
+document.getElementById("checkClaimButton").addEventListener("click", fetchClaimInput);

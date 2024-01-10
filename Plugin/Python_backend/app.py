@@ -42,6 +42,14 @@ def process_html():
     
     return jsonify({'message': 'HTML processed successfully'})
 
+@app.route("/process_claim", methods=['POST'])
+def process_claim():
+    claim = request.get_json()
+    claim_text = claim.get('claim')
+    print("CLAIM TEXT: ", claim_text)
+    # trigger the check of if it's claim worthy
+    # maybe doesn't even need a check since the user wants it checked?
+
 
 if __name__ == '__main__':
     app.run(debug=True, host='127.0.0.1', port=5000)
