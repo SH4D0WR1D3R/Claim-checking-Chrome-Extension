@@ -49,6 +49,7 @@ def process_claim():
     print("CLAIM TEXT: ", claim_text)
     # trigger the check of if it's claim worthy
     # maybe doesn't even need a check since the user wants it checked?
+    return claim_text
 
 
 if __name__ == '__main__':

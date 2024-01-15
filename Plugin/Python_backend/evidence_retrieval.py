@@ -13,13 +13,19 @@
 # first create class
 # then create function that takes a claim and searches for it exactly 
 
-from googlesearch import search
-from transformers import pipeline
+# ERROR: googlesearch isn't recognised
+# from googlesearch import search
+# from transformers import pipeline
 
-class evidence_retrieval():
+# class evidence_retrieval():
 
-    def __init__(self):
-        return None
+#     # each instance of class will have a claim - purpose of object is to find evidence for given claim
+#     def __init__(self, claim):
+#         self.claim = claim
 
-    def search_claim(self, claim):
-        return None
+#     def search_claim(self):
+#         search_results = search(self.claim, num_results=10, stop=10)
+#         return search_results
+
+# test_object = evidence_retrieval("the earth is flat")
+# print(test_object.search_claim())
