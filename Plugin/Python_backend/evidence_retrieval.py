@@ -29,3 +29,15 @@
 
 # test_object = evidence_retrieval("the earth is flat")
 # print(test_object.search_claim())
+
+from bs4 import BeautifulSoup
+import requests
+
+class evidence_retrieval():
+    def __init__(self, claim):
+        self.claim = claim
+
+    def search_claim(self):
+        # something using beautifulsoup probably
+        # could use carrot2 API to cluster results
+        return None
