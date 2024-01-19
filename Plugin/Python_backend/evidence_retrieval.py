@@ -34,10 +34,12 @@ from bs4 import BeautifulSoup
 import requests
 
 class evidence_retrieval():
+    news_sites = ["https://www.bbc.co.uk/news", "https://www.theguardian.com/uk", "https://www.independent.co.uk/", "https://www.telegraph.co.uk/news/"]
     def __init__(self, claim):
         self.claim = claim
 
     def search_claim(self):
         # something using beautifulsoup probably
-        # could use carrot2 API to cluster results
+        # for loop through each news site, crawling for news articles relating to the topic of the claim
+        # go with the assumption there is a topic for a given claim - test on a pair of <claim, topic>
         return None
