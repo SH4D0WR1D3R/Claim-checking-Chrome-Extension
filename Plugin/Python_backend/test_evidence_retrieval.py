@@ -21,12 +21,16 @@ class BBCSpider(scrapy.Spider):
 
     def parse_search_results(self, response):
         article_links = response.css('a::attr(href)').extract() # css might need to change
+        # so this doesn't work. need to delve into different divs to find relevant links
+        
+        # currently its getting nothing for the first 2 things and only doing the parse article bit
         for link in article_links:
             yield scrapy.Request(url=link, callback=self.parse_article)
 
     def parse_article(self, response):
         title = response.css('h1::text').get()
-        content = response.css('div.story-body__inner > p::text').extract()
+        content = response.css('body').extract()
+        # content is returning nothing
         yield {
             'title': title,
             'content': ' '.join(content),
