@@ -1,7 +1,8 @@
 import scrapy
 from selenium import webdriver
-from selenium.webdriver.chrome.options import options
-from scrapy.selector import selector
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
+from scrapy.selector import Selector
 import time
 
 class CnnSpider(scrapy.Spider):
@@ -10,11 +11,13 @@ class CnnSpider(scrapy.Spider):
     start_urls = ['https://www.cnn.com']
 
     def __init__(self):
-        chrome_options = options.Options()
+        chrome_options = Options()
         chrome_options.add_argument("--headless")
         # chrome_options.add_argument("--disable-gpu")
-        driver = webdriver.Chrome(executable_path=str('./chromedriver'), options=chrome_options)
-        driver.get('https://www.bbc.co.uk/news')
+        service = Service('./chromedriver')
+        options = webdriver.ChromeOptions()
+        driver = webdriver.Chrome(service=service, options=options)
+        driver.get('https://www.cnn.com')
 
         # begin search
         search_input = driver.find_element_by_id("footer-search-bar")
@@ -36,7 +39,7 @@ class CnnSpider(scrapy.Spider):
 
     def parse(self, response):
         for page in self.html:
-            resp = selector(text=page)
+            resp = Selector(text=page)
             results = resp.xpath("//div[@class='cnn-search__result cnn-search__result--article']/div/h3/a")
             for result in results:
                 title = result.xpath(".//text()").get()
