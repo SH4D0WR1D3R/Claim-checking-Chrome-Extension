@@ -17,6 +17,7 @@ class BBCSpider(scrapy.Spider):
     def start_requests(self):
         search_term = 'global warming'
         search_url = f'https://www.bbc.co.uk/search?q={search_term}&type=article'
+        # this type of querying doesn't work for the independent, for example
         yield scrapy.Request(url=search_url, callback=self.parse_search_results)
         
 
@@ -28,6 +29,7 @@ class BBCSpider(scrapy.Spider):
         soup = BeautifulSoup(response.body, 'html.parser')
         # need to extract non header and footer stuff
         href_links = [a.get('href') for a in soup.find_all('a', href=True)]
+        # some form of regex 
         print(href_links)
 
         article_links = response.css('a::attr(href)').getall()

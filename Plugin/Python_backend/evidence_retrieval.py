@@ -32,11 +32,17 @@
 
 from bs4 import BeautifulSoup
 import requests
+import spacy
 
 class evidence_retrieval():
     news_sites = ["https://www.bbc.co.uk/news", "https://www.theguardian.com/uk", "https://www.independent.co.uk/", "https://www.telegraph.co.uk/news/"]
     def __init__(self, claim):
         self.claim = claim
+
+    def breakdown_claim(self):
+        nlp = spacy.load("en_core_web_sm")
+        doc = nlp(self.claim)
+        return [token.text for token in doc if not token.is_stop and not token.is_punct]
 
     def search_claim(self):
         # something using beautifulsoup probably
