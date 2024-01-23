@@ -16,7 +16,7 @@ class BBCSpider(scrapy.Spider):
 
     def start_requests(self):
         search_term = 'global warming'
-        search_url = f'https://www.bbc.co.uk/search?q={search_term}&type=article'
+        search_url = f'https://www.google.co.uk/search?q={search_term}&type=article'
         # this type of querying doesn't work for the independent, for example
         yield scrapy.Request(url=search_url, callback=self.parse_search_results)
         

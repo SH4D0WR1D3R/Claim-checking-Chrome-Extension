@@ -40,7 +40,7 @@ class evidence_retrieval():
         self.claim = claim
 
     def breakdown_claim(self):
-        nlp = spacy.load("en_core_web_sm")
+        nlp = spacy.load("en_core_web_sm") # doesn't like this
         doc = nlp(self.claim)
         return [token.text for token in doc if not token.is_stop and not token.is_punct]
 
@@ -49,3 +49,6 @@ class evidence_retrieval():
         # for loop through each news site, crawling for news articles relating to the topic of the claim
         # go with the assumption there is a topic for a given claim - test on a pair of <claim, topic>
         return None
+    
+# object = evidence_retrieval("the earth is flat")
+# print(object.breakdown_claim())
