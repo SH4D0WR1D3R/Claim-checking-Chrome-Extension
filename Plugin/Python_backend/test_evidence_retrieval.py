@@ -26,11 +26,13 @@ class BBCSpider(scrapy.Spider):
         # is a Response object?
         # article_links = response.css('a::attr(href)').extract()
         # print("O", response)
+        print("PARSE_SEARCH_RESULTS")
         soup = BeautifulSoup(response.body, 'html.parser')
         # need to extract non header and footer stuff
+        print(soup.prettify())
         href_links = [a.get('href') for a in soup.find_all('a', href=True)]
         # some form of regex 
-        print(href_links)
+        print("HREF ", href_links)
 
         article_links = response.css('a::attr(href)').getall()
 
@@ -41,19 +43,20 @@ class BBCSpider(scrapy.Spider):
 
         # once able to access these links, need to be able to go through those links?
         for link in href_links:
-            try:
-                yield scrapy.Request(url=link, callback=self.parse_article) # in theory this should go through found links and parse those articles
-            except:
-                pass
+            # try:
+            yield scrapy.Request(url=link, callback=self.parse_article) # in theory this should go through found links and parse those articles
+            # except:
+            #     pass
 
-    def parse_article(self, response):
+    def parse_article(self, response): # this isn't running
+        print("Response", response)
         title = response.css('h1::text').get()
-        # content = response.css('body').extract()
+        content = response.css('body::text').get()
         # content = response.css('p::text').getall() # CHANGE THIS
         # content is returning nothing
         yield {
             'title': title,
-            # 'content': ' '.join(content),
+            'content': ' '.join(content),
             'url': response.url
         }
 
