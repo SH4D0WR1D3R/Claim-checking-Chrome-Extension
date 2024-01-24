@@ -10,22 +10,21 @@ from bs4 import BeautifulSoup
 class BBCSpider(scrapy.Spider):
     name = 'bbc'
     allowed_domains = ['bbc.co.uk']
-    # start_urls = ['https://www.cnn.com'] # something to add to
+    start_urls = ['https://www.bbc.co.uk'] # something to add to
 
     # def __init__(self):
 
     def start_requests(self):
         search_term = 'global warming'
-        search_url = f'https://www.google.co.uk/search?q={search_term}&type=article'
+        search_url = f'https://www.bbc.co.uk/search?q={search_term}&type=article'
         # this type of querying doesn't work for the independent, for example
-        yield scrapy.Request(url=search_url, callback=self.parse_search_results)
+        yield scrapy.Request(url=search_url, callback=self.parse_search_results) # set the cookies token somehow
         
 
     def parse_search_results(self, response):
         # response is the response of the request where this function is called
         # is a Response object?
         # article_links = response.css('a::attr(href)').extract()
-        # print("O", response)
         print("PARSE_SEARCH_RESULTS")
         soup = BeautifulSoup(response.body, 'html.parser')
         # need to extract non header and footer stuff
@@ -43,20 +42,20 @@ class BBCSpider(scrapy.Spider):
 
         # once able to access these links, need to be able to go through those links?
         for link in href_links:
-            # try:
-            yield scrapy.Request(url=link, callback=self.parse_article) # in theory this should go through found links and parse those articles
-            # except:
-            #     pass
+            try:
+                yield scrapy.Request(url=link, callback=self.parse_article) # in theory this should go through found links and parse those articles
+            except:
+                pass
 
     def parse_article(self, response): # this isn't running
         print("Response", response)
         title = response.css('h1::text').get()
-        content = response.css('body::text').get()
+        # content = response.css('body::text').get()
         # content = response.css('p::text').getall() # CHANGE THIS
         # content is returning nothing
         yield {
             'title': title,
-            'content': ' '.join(content),
+            # 'content': ' '.join(content),
             'url': response.url
         }
 
