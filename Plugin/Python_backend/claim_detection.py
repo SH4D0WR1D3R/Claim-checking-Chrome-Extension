@@ -58,6 +58,7 @@ class claim_detection:
         api_response = requests.get(url=endpoint_url, headers=request_headers)
         if api_response.status_code == 200:
             self.ranked_sentences = api_response.json()
+            # print("SENTENCES ", self.ranked_sentences)
             return self.ranked_sentences
         else:
             print(f"Request failed with status code: {api_response.status_code}")
@@ -66,9 +67,12 @@ class claim_detection:
     def convert_to_file(self):
         # check if file already exists? 
         # TO DO: if no article_html to write, make sure to delete html_file.html if it exists
-        html_file = open(self.html_file_name, "w")
-        html_file.write(self.article_html)
-        html_file.close()
+        open(self.html_file_name, "w").close() # clear file
+        with open(self.html_file_name, "w", encoding="utf-8") as html_file:
+            html_file.write(self.article_html)
+        # html_file = open(self.html_file_name, "w")
+        # html_file.write(self.article_html)
+        # html_file.close()
 
     # from the sentences that have been given a rate, filter out any that are below 0.5
     def find_top_sentences(self):

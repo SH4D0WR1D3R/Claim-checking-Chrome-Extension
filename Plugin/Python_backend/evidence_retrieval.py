@@ -35,7 +35,7 @@ import requests
 import spacy
 
 class evidence_retrieval():
-    news_sites = ["https://www.bbc.co.uk/news", "https://www.theguardian.com/uk", "https://www.independent.co.uk/", "https://www.telegraph.co.uk/news/"]
+    news_sites = ["https://www.bbc.co.uk/news", "https://www.theguardian.com/uk", "https://www.independent.co.uk/", "https://www.telegraph.co.uk/news/", "https://www.mirror.co.uk/news/", "https://www.express.co.uk/news", "https://www.dailymail.co.uk/news/index.html", "https://www.thesun.co.uk/news/", "https://www.thetimes.co.uk/"]
     def __init__(self, claim):
         self.claim = claim
 
