@@ -10,7 +10,8 @@
         "search", 
         "sidePanel",
         "activeTab",
-        "scripting"
+        "scripting",
+        "cookies"
     ],
     "host_permissions": [
         "http://127.0.0.1:5000/",

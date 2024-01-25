@@ -10,3 +10,11 @@ chrome.runtime.sendMessage({action: 'getHTMLContent'}, (response) => {
         port.postMessage({htmlContent: response.htmlContent});
     }
 });
+
+// chrome.cookies.get({url: 'https://www.google.co.uk', name: 'CONSENT'}, 
+//     function(cookie) {
+//         if (cookie) {
+//             console.log(cookie.value);
+//             // probably wanna send a message instead of console logging
+//         }
+//     });

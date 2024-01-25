@@ -34,7 +34,7 @@ class claim_detection:
     # method to take the html of the article and return a string of sentences of the article text
     def filter_article_html(self):
         # TO DO: check if file exists
-        with open(self.html_file_name, "r") as temp_html_file:
+        with open(self.html_file_name, "r", encoding="utf-8") as temp_html_file:
             html_content = temp_html_file.read()
 
         html_soup = BeautifulSoup(html_content, 'html.parser')
@@ -58,7 +58,7 @@ class claim_detection:
         api_response = requests.get(url=endpoint_url, headers=request_headers)
         if api_response.status_code == 200:
             self.ranked_sentences = api_response.json()
-            # print("SENTENCES ", self.ranked_sentences)
+            print("SENTENCES ", self.ranked_sentences)
             return self.ranked_sentences
         else:
             print(f"Request failed with status code: {api_response.status_code}")
@@ -79,9 +79,10 @@ class claim_detection:
         print("RESULTS ", self.ranked_sentences.get("results"))
         results = self.ranked_sentences.get("results")
         top_results = []
-        for result in results:
-            if result.get("score") > 0.5:
-                top_results += [result]
+        if results:
+            for result in results:
+                if result.get("score") > 0.5:
+                    top_results += [result]
 
         print("TOP RESULTS ", top_results)
         return top_results
