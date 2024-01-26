@@ -15,10 +15,14 @@ class BBCSpider(scrapy.Spider):
     # def __init__(self):
 
     def start_requests(self):
-        search_term = 'global warming'
-        search_url = f'https://www.bbc.co.uk/search?q={search_term}&type=article'
+        search_term = 'Thousands stranded at New Year as Eurostar cancelled'
+        search_url = f'https://duckduckgo.com//?q={search_term}&type=article'
+        # search_url = f'https://www.bbc.co.uk/search?q={search_term}&type=article'
         # this type of querying doesn't work for the independent, for example
-        yield scrapy.Request(url=search_url, callback=self.parse_search_results) # set the cookies token somehow
+        request = scrapy.Request(url=search_url, callback=self.parse_search_results)
+        # SHOULDN'T USE MY LOCAL TOKEN
+        # request.cookies()
+        yield request # set the cookies token somehow
         
 
     def parse_search_results(self, response):
