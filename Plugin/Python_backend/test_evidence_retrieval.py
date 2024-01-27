@@ -16,7 +16,7 @@ class BBCSpider(scrapy.Spider):
 
     def start_requests(self):
         search_term = 'Thousands stranded at New Year as Eurostar cancelled'
-        search_url = f'https://duckduckgo.com//?q={search_term}&type=article'
+        search_url = f'https://duckduckgo.com/html/?q={search_term}&type=article'
         # search_url = f'https://www.bbc.co.uk/search?q={search_term}&type=article'
         # this type of querying doesn't work for the independent, for example
         request = scrapy.Request(url=search_url, callback=self.parse_search_results)
@@ -65,7 +65,7 @@ class BBCSpider(scrapy.Spider):
 
 process = CrawlerProcess(settings={
     'FEED_FORMAT': 'json',
-    'FEED_URI': 'output.json'
+    'FEED_URI': 'output1.json'
 })
 
 process.crawl(BBCSpider)
