@@ -63,7 +63,6 @@ class claim_detection:
         else:
             print(f"Request failed with status code: {api_response.status_code}")
 
-
     def convert_to_file(self):
         # check if file already exists? 
         # TO DO: if no article_html to write, make sure to delete html_file.html if it exists
