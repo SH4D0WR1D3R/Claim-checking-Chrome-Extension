@@ -8,11 +8,12 @@ from scrapy.crawler import CrawlerProcess
 
 class evidence_retrieval_spider(scrapy.Spider):
     name = 'duckduckgo'
-    allowed_domains = ['duckduckgo.com']
+    allowed_domains = ['duckduckgo.com', 'bbc.co.uk', 'independent.co.uk', 'theguardian.com', 'telegraph.co.uk', 'thetimes.co.uk', 'dailymail.co.uk']
     start_urls = ['https://duckduckgo.com'] 
     # have a whitelist of domains to search through
 
-    evidence_and_articles_text = {}
+    def __init__(self):
+        self.evidence_and_articles_text = {}
 
     # method to start the scraping
     def start_requests(self):
@@ -42,14 +43,15 @@ class evidence_retrieval_spider(scrapy.Spider):
 
         # iterate through each link, call a function to parse the article
         for link in new_links:
-            try:
-                # store link in dict - will be link:claims pairing
-                yield scrapy.Request(url=link, callback=self.parse_article)
-            except:
-                pass
+            yield scrapy.Request(url=link, callback=self.parse_article)
+            # try:
+            #     # store link in dict - will be link:claims pairing
+            #     yield scrapy.Request(url=link, callback=self.parse_article)
+            # except:
+            #     pass
 
     def get_link(self, link):
-        return str(link).split("</a>")[0].split(">")[-1].strip()
+        return "https://" + str(link).split("</a>")[0].split(">")[-1].strip()
 
     def parse_links(self, links):
         # parse the list of links to get the actual link
@@ -57,7 +59,9 @@ class evidence_retrieval_spider(scrapy.Spider):
     
     # parse the article to get the text
     def parse_article(self, response):
+        print("article")
         # need article tag
+        link = response.url
         soup = BeautifulSoup(response.body, 'html.parser')
         article = soup.find('article')
         if article:
@@ -67,7 +71,8 @@ class evidence_retrieval_spider(scrapy.Spider):
                 article_text += paragraph.text
 
             # now we have the text, need to pick claims out of it to compare
-        pass
+            self.evidence_and_articles_text[link] = article_text
+        print("DICT", self.evidence_and_articles_text)
 
 process = CrawlerProcess(settings={
     'FEED_FORMAT': 'json',
