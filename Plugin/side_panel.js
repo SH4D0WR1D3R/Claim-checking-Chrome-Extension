@@ -7,9 +7,11 @@ const serverUrl = 'http://localhost:5000/'
 fetch(serverUrl).then(response => response.json()).then(data => {
     // process and display data in your extension UI
     const dataContainer = document.getElementById('evidenceContainer'); // should return container object
+    // error in this area
     dataContainer.innerText = JSON.stringify(data);
 }).catch(error => {
     console.error('Error: ', error);
+    // TypeError: Failed to fetch
 });
 
 // Listen for messages from contentScript.js

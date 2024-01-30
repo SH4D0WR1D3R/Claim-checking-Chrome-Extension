@@ -5,12 +5,13 @@ from flask_cors import CORS
 from dotenv import load_dotenv
 from bs4 import BeautifulStoneSoup
 import claim_detection
+import evidence_retrieval
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
 load_dotenv()
-claim_detection_object = claim_detection.claim_detection()
+
 
 # DEFAULT URL
 @app.route("/")
@@ -19,6 +20,7 @@ def default():
 
 @app.route("/process_html", methods=['POST'])
 def process_html():
+    claim_detection_object = claim_detection.claim_detection()
     # get the html from the request
     data = request.get_json()
     html = data.get('html')
@@ -39,6 +41,13 @@ def process_html():
     claim_detection_object.find_top_sentences()
 
     # trigger rest of process here? evidence retrieval
+
+    # iterate through top sentences
+    # instantiate evidence_retrieval object for each sentence
+    for sentence in claim_detection_object.top_sentences:
+        evidence_retrieval_object = evidence_retrieval(sentence, title, article_content)
+        evidence_retrieval_object.run_spider()
+
     
     return jsonify({'message': 'HTML processed successfully'})
 
