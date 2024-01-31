@@ -5,7 +5,7 @@ from flask_cors import CORS
 from dotenv import load_dotenv
 from bs4 import BeautifulStoneSoup
 import claim_detection
-import evidence_retrieval
+import evidence_retrieval as evidence_retrieval
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
@@ -38,17 +38,20 @@ def process_html():
     ranked_sentences = claim_detection_object.filter_sentences()
 
     # get sentences with scores over a defined threshold - means they are claim worthy/worth verifying
-    claim_detection_object.find_top_sentences()
+    top_sentences = claim_detection_object.find_top_sentences()
 
     # trigger rest of process here? evidence retrieval
 
     # iterate through top sentences
     # instantiate evidence_retrieval object for each sentence
-    for sentence in claim_detection_object.top_sentences:
-        evidence_retrieval_object = evidence_retrieval(sentence, title, article_content)
-        evidence_retrieval_object.run_spider()
+    # ALSO A FETCH ERROR HAPPENING WITH JS WHEN THIS CODE IS INCLUDED
+    # for sentence in top_sentences: 
+    #     evidence_retrieval.run_spider(sentence) # NOT SURE THIS WILL WORK
 
-    
+    evidence_retrieval.run_spider("Thousands stranded at New Year as Eurostar cancelled")
+    # might be an issue of when process.start() is called
+    # maybe need to do process.crawl on all sentences first, then process.start()
+
     return jsonify({'message': 'HTML processed successfully'})
 
 @app.route("/process_claim", methods=['POST'])

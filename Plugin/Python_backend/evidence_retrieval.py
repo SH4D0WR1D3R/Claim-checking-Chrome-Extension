@@ -5,6 +5,8 @@ import requests
 import spacy
 import scrapy
 from scrapy.crawler import CrawlerProcess
+from dotenv import load_dotenv
+import os
 
 class evidence_retrieval_spider(scrapy.Spider):
     name = 'duckduckgo'
@@ -12,13 +14,16 @@ class evidence_retrieval_spider(scrapy.Spider):
     start_urls = ['https://duckduckgo.com'] 
     # have a whitelist of domains to search through
 
-    def __init__(self):
+    def __init__(self, search_term):
         self.evidence_and_articles_text = {}
+        self.search_term = search_term
+        load_dotenv()
+        self.api_key = os.environ['CLAIMBUSTER_API_KEY']
 
     # method to start the scraping
     def start_requests(self):
-        search_term = 'Thousands stranded at New Year as Eurostar cancelled'
-        search_url = f'https://duckduckgo.com/html/?q={search_term}&type=article'
+        # search_term = self.search_term
+        search_url = f'https://duckduckgo.com/html/?q={self.search_term}&type=article'
         request = scrapy.Request(url=search_url, callback=self.parse_search_results)
         yield request
 
@@ -71,16 +76,37 @@ class evidence_retrieval_spider(scrapy.Spider):
                 article_text += paragraph.text
 
             # now we have the text, need to pick claims out of it to compare
-            self.evidence_and_articles_text[link] = article_text
+            self.evidence_and_articles_text[link] = self.extract_claims(article_text)
         print("DICT", self.evidence_and_articles_text)
 
-process = CrawlerProcess(settings={
-    'FEED_FORMAT': 'json',
-    'FEED_URI': 'output2.json'
-})
+    def extract_claims(self, article_text):
+        article_text = article_text.replace(".", ". ")
+        endpoint_url = f"https://idir.uta.edu/claimbuster/api/v2/score/text/sentences/{article_text}"
+        request_headers = {"x-api-key": self.api_key}
+        api_response = requests.get(url=endpoint_url, headers=request_headers)
+        if api_response.status_code == 200:
+            ranked_sentences = api_response.json()
+            print("SENTENCES ", ranked_sentences)
+            return ranked_sentences
+        else:
+            print(f"Request failed with status code: {api_response.status_code}")
+        
 
-process.crawl(evidence_retrieval_spider)
-process.start()
+
+
+def run_spider(search_term):
+    process = CrawlerProcess(settings={
+        'FEED_FORMAT': 'json',
+        'FEED_URI': 'output2.json'
+    })
+    process.crawl(evidence_retrieval_spider, search_term=search_term)
+    process.start()
+
+
+# process.crawl(evidence_retrieval_spider)
+# process.start()
+
+# run_spider("Thousands stranded at New Year as Eurostar cancelled")
     
 # object = evidence_retrieval("the earth is flat")
 # print(object.breakdown_claim())
