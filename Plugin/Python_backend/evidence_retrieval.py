@@ -94,13 +94,21 @@ class evidence_retrieval_spider(scrapy.Spider):
 
 
 
-def run_spider(search_term):
-    process = CrawlerProcess(settings={
-        'FEED_FORMAT': 'json',
-        'FEED_URI': 'output2.json'
-    })
-    process.crawl(evidence_retrieval_spider, search_term=search_term)
-    process.start()
+# def run_spider(search_term):
+#     process = CrawlerProcess(settings={
+#         'FEED_FORMAT': 'json',
+#         'FEED_URI': 'output2.json'
+#     })
+#     process.crawl(evidence_retrieval_spider, search_term=search_term)
+#     process.start()
+            
+# process = CrawlerProcess(settings = {
+#         'FEED_FORMAT': 'json',
+#         'FEED_URI': 'output2.json'
+#     })
+
+# process.crawl(evidence_retrieval_spider, search_term="Thousands stranded at New Year as Eurostar cancelled")
+# process.start()
 
 
 # process.crawl(evidence_retrieval_spider)

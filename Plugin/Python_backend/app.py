@@ -6,6 +6,9 @@ from dotenv import load_dotenv
 from bs4 import BeautifulStoneSoup
 import claim_detection
 import evidence_retrieval as evidence_retrieval
+import scrapy
+from scrapy.crawler import CrawlerRunner
+from twisted.internet import reactor
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
@@ -48,9 +51,26 @@ def process_html():
     # for sentence in top_sentences: 
     #     evidence_retrieval.run_spider(sentence) # NOT SURE THIS WILL WORK
 
-    evidence_retrieval.run_spider("Thousands stranded at New Year as Eurostar cancelled")
+    # evidence_retrieval.run_spider("Thousands stranded at New Year as Eurostar cancelled")
     # might be an issue of when process.start() is called
     # maybe need to do process.crawl on all sentences first, then process.start()
+
+    # maybe just have the whole process code be in this file?
+
+    # process = CrawlerProcess(settings = {
+    #     'FEED_FORMAT': 'json',
+    #     'FEED_URI': 'output2.json'
+    # })
+
+    # process.crawl(evidence_retrieval.evidence_retrieval_spider, search_term="Thousands stranded at New Year as Eurostar cancelled")
+    # process.start()
+
+    runner = CrawlerRunner()
+    d = runner.crawl(evidence_retrieval.evidence_retrieval_spider, search_term="Thousands stranded at New Year as Eurostar cancelled")
+    d.addBoth(lambda _: reactor.stop())
+    reactor.run()
+
+    # maybe use CrawlerRunner instead of CrawlerProcess?
 
     return jsonify({'message': 'HTML processed successfully'})
 
