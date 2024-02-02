@@ -4,9 +4,10 @@ from bs4 import BeautifulSoup
 import requests
 import spacy
 import scrapy
-from scrapy.crawler import CrawlerProcess
+from scrapy.crawler import CrawlerProcess, CrawlerRunner
 from dotenv import load_dotenv
 import os
+from twisted.internet import reactor
 
 class evidence_retrieval_spider(scrapy.Spider):
     name = 'duckduckgo'
@@ -92,29 +93,7 @@ class evidence_retrieval_spider(scrapy.Spider):
             print(f"Request failed with status code: {api_response.status_code}")
         
 
-
-
-# def run_spider(search_term):
-#     process = CrawlerProcess(settings={
-#         'FEED_FORMAT': 'json',
-#         'FEED_URI': 'output2.json'
-#     })
-#     process.crawl(evidence_retrieval_spider, search_term=search_term)
-#     process.start()
-            
-# process = CrawlerProcess(settings = {
-#         'FEED_FORMAT': 'json',
-#         'FEED_URI': 'output2.json'
-#     })
-
-# process.crawl(evidence_retrieval_spider, search_term="Thousands stranded at New Year as Eurostar cancelled")
-# process.start()
-
-
-# process.crawl(evidence_retrieval_spider)
-# process.start()
-
-# run_spider("Thousands stranded at New Year as Eurostar cancelled")
-    
-# object = evidence_retrieval("the earth is flat")
-# print(object.breakdown_claim())
+runner = CrawlerRunner()
+d = runner.crawl(evidence_retrieval_spider, search_term="Thousands stranded at New Year as Eurostar cancelled")
+d.addBoth(lambda _: reactor.stop())
+reactor.run()
