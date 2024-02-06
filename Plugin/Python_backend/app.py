@@ -7,8 +7,10 @@ from bs4 import BeautifulStoneSoup
 import claim_detection
 import evidence_retrieval as evidence_retrieval
 import scrapy
-from scrapy.crawler import CrawlerRunner
+from scrapy.crawler import CrawlerRunner, Crawler
+from scrapy.settings import Settings
 from twisted.internet import reactor
+# from scrapy import log
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
@@ -69,6 +71,16 @@ def process_html():
     d = runner.crawl(evidence_retrieval.evidence_retrieval_spider, search_term="Thousands stranded at New Year as Eurostar cancelled")
     d.addBoth(lambda _: reactor.stop())
     reactor.run()
+    # crawler = Crawler()
+    # crawler = CrawlerRunner(Settings())
+    # # crawler.configure()
+    # crawler.crawl(evidence_retrieval.evidence_retrieval_spider, search_term="Thousands stranded at New Year as Eurostar cancelled")
+    # crawler.start()
+
+    # log.start()
+    # log.msg('Running reactor...')
+    # reactor.run()
+    # log.msg('Reactor stopped.')
 
     # maybe use CrawlerRunner instead of CrawlerProcess?
 
