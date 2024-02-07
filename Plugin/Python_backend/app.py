@@ -69,20 +69,9 @@ def process_html():
 
     runner = CrawlerRunner()
     d = runner.crawl(evidence_retrieval.evidence_retrieval_spider, search_term="Thousands stranded at New Year as Eurostar cancelled")
+    # how can I extract the returned data from the spider?
     d.addBoth(lambda _: reactor.stop())
     reactor.run()
-    # crawler = Crawler()
-    # crawler = CrawlerRunner(Settings())
-    # # crawler.configure()
-    # crawler.crawl(evidence_retrieval.evidence_retrieval_spider, search_term="Thousands stranded at New Year as Eurostar cancelled")
-    # crawler.start()
-
-    # log.start()
-    # log.msg('Running reactor...')
-    # reactor.run()
-    # log.msg('Reactor stopped.')
-
-    # maybe use CrawlerRunner instead of CrawlerProcess?
 
     return jsonify({'message': 'HTML processed successfully'})
 

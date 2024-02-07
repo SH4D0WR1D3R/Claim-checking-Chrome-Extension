@@ -78,7 +78,7 @@ class evidence_retrieval_spider(scrapy.Spider):
 
             # now we have the text, need to pick claims out of it to compare
             self.evidence_and_articles_text[link] = self.extract_claims(article_text)
-        print("DICT", self.evidence_and_articles_text)
+        # print("DICT", self.evidence_and_articles_text)
 
     def extract_claims(self, article_text):
         article_text = article_text.replace(".", ". ")
@@ -87,7 +87,7 @@ class evidence_retrieval_spider(scrapy.Spider):
         api_response = requests.get(url=endpoint_url, headers=request_headers)
         if api_response.status_code == 200:
             ranked_sentences = api_response.json()
-            print("SENTENCES ", ranked_sentences)
+            # print("SENTENCES ", ranked_sentences)
             return ranked_sentences
         else:
             print(f"Request failed with status code: {api_response.status_code}")
