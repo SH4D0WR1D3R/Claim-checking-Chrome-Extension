@@ -69,9 +69,6 @@ class claim_detection:
         open(self.html_file_name, "w").close() # clear file
         with open(self.html_file_name, "w", encoding="utf-8") as html_file:
             html_file.write(self.article_html)
-        # html_file = open(self.html_file_name, "w")
-        # html_file.write(self.article_html)
-        # html_file.close()
 
     # from the sentences that have been given a rate, filter out any that are below 0.5
     def find_top_sentences(self):
@@ -85,7 +82,21 @@ class claim_detection:
 
         print("TOP RESULTS ", top_results)
         return top_results
+    
+    def test_similarity_score(self, claimA, claimB):
+        endpoint_url = f"https://idir.uta.edu/claimbuster/api/v2/claim_similarity/simple_similarity/score/claim_a/{claimA}/claim_b/{claimB}"
+        request_headers = {"x-api-key": self.api_key}
+        api_response = requests.get(url=endpoint_url, headers=request_headers)
+        if api_response.status_code == 200:
+            similarity_score = api_response.json()
+            print("SIMILARITY SCORE ", similarity_score)
+            return similarity_score
+        else:
+            print(f"Request failed with status code: {api_response.status_code}")
+
 
 # testing of methods
 # temp_object = claim_detection()
 # temp_object.filter_sentences("the earth is flat. donald trump is banned from running in 2 states.")
+temp_object = claim_detection()
+temp_object.test_similarity_score("the sky is blue", "the sky is not blue")
