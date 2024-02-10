@@ -98,5 +98,5 @@ class claim_detection:
 # testing of methods
 # temp_object = claim_detection()
 # temp_object.filter_sentences("the earth is flat. donald trump is banned from running in 2 states.")
-temp_object = claim_detection()
-temp_object.test_similarity_score("the sky is blue", "the sky is not blue")
+# temp_object = claim_detection()
+# temp_object.test_similarity_score("England is a country", "The grass is green")

@@ -47,25 +47,13 @@ def process_html():
 
     # trigger rest of process here? evidence retrieval
 
-    # iterate through top sentences
-    # instantiate evidence_retrieval object for each sentence
-    # ALSO A FETCH ERROR HAPPENING WITH JS WHEN THIS CODE IS INCLUDED
-    # for sentence in top_sentences: 
-    #     evidence_retrieval.run_spider(sentence) # NOT SURE THIS WILL WORK
+    # dispatcher might be useful?
 
-    # evidence_retrieval.run_spider("Thousands stranded at New Year as Eurostar cancelled")
-    # might be an issue of when process.start() is called
-    # maybe need to do process.crawl on all sentences first, then process.start()
+    # have a variable here to store data from spider into
+    # function to add to local variable
+    # dispatcher.connect(function, signal=signals.item_scraped)
 
-    # maybe just have the whole process code be in this file?
-
-    # process = CrawlerProcess(settings = {
-    #     'FEED_FORMAT': 'json',
-    #     'FEED_URI': 'output2.json'
-    # })
-
-    # process.crawl(evidence_retrieval.evidence_retrieval_spider, search_term="Thousands stranded at New Year as Eurostar cancelled")
-    # process.start()
+    # signals comes from "from scrapy import signals"
 
     runner = CrawlerRunner()
     d = runner.crawl(evidence_retrieval.evidence_retrieval_spider, search_term="Thousands stranded at New Year as Eurostar cancelled")
