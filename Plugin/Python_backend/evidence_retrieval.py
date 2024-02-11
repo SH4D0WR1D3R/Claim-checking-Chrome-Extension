@@ -16,6 +16,8 @@ class evidence_retrieval_spider(scrapy.Spider):
     # have a whitelist of domains to search through
 
     evidence_file = "evidence.txt"
+
+    results = {}
     
 
     def __init__(self, search_term):
@@ -25,7 +27,8 @@ class evidence_retrieval_spider(scrapy.Spider):
         self.api_key = os.environ['CLAIMBUSTER_API_KEY']
         # with open(self.html_file_name, "r", encoding="utf-8") as self.open_evidence_file:
         #     html_content = temp_html_file.read()
-        self.open_evidence_file.open(self.evidence_file, "w")
+        # self.open_evidence_file.open(self.evidence_file, "w")
+
 
     # method to start the scraping
     def start_requests(self):
@@ -83,7 +86,10 @@ class evidence_retrieval_spider(scrapy.Spider):
                 article_text += paragraph.text
 
             # now we have the text, need to pick claims out of it to compare
-            self.evidence_and_articles_text[link] = self.extract_claims(article_text)
+            # self.evidence_and_articles_text[link] = self.extract_claims(article_text)
+            self.results[link] = self.extract_claims(article_text)
+            # result = self.evidence_and_articles_text
+
         # print("DICT", self.evidence_and_articles_text)
 
     def extract_claims(self, article_text):
@@ -98,6 +104,12 @@ class evidence_retrieval_spider(scrapy.Spider):
         else:
             print(f"Request failed with status code: {api_response.status_code}")
         
+
+def run_spider(search_term):
+    process = CrawlerProcess()
+    process.crawl(evidence_retrieval_spider, search_term=search_term)
+    process.start()
+    return evidence_retrieval_spider.results
 
 # runner = CrawlerRunner()
 # d = runner.crawl(evidence_retrieval_spider, search_term="Thousands stranded at New Year as Eurostar cancelled")
