@@ -15,11 +15,17 @@ class evidence_retrieval_spider(scrapy.Spider):
     start_urls = ['https://duckduckgo.com'] 
     # have a whitelist of domains to search through
 
+    evidence_file = "evidence.txt"
+    
+
     def __init__(self, search_term):
         self.evidence_and_articles_text = {}
         self.search_term = search_term
         load_dotenv()
         self.api_key = os.environ['CLAIMBUSTER_API_KEY']
+        # with open(self.html_file_name, "r", encoding="utf-8") as self.open_evidence_file:
+        #     html_content = temp_html_file.read()
+        self.open_evidence_file.open(self.evidence_file, "w")
 
     # method to start the scraping
     def start_requests(self):

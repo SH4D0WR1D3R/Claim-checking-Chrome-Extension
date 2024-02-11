@@ -7,9 +7,11 @@ from bs4 import BeautifulStoneSoup
 import claim_detection
 import evidence_retrieval as evidence_retrieval
 import scrapy
-from scrapy.crawler import CrawlerRunner, Crawler
+from scrapy.crawler import CrawlerRunner, Crawler, CrawlerProcess
 from scrapy.settings import Settings
 from twisted.internet import reactor
+from scrapy import signals
+from scrapy.signalmanager import dispatcher
 # from scrapy import log
 
 app = Flask(__name__)
@@ -55,13 +57,28 @@ def process_html():
 
     # signals comes from "from scrapy import signals"
 
+    results = []
+
+    def crawler_results(signal, sender, item, response, spider):
+        results.append(item)
+
+    dispatcher.connect(crawler_results, signal=signals.item_scraped)
+
     runner = CrawlerRunner()
     d = runner.crawl(evidence_retrieval.evidence_retrieval_spider, search_term="Thousands stranded at New Year as Eurostar cancelled")
-    # how can I extract the returned data from the spider?
+    # how can I extract the returned data from the spider?``
     d.addBoth(lambda _: reactor.stop())
+    # add a callback to the spider to store the data in a variable
+    d.addBoth(lambda _: print("RESULTS: ", results))
     reactor.run()
+    # process = CrawlerProcess(Settings())
+    # process.crawl(evidence_retrieval.evidence_retrieval_spider, search_term="Thousands stranded at New Year as Eurostar cancelled")
+    # process.start()
+
+    print("APP RESULTS: ", results)
 
     return jsonify({'message': 'HTML processed successfully'})
+
 
 @app.route("/process_claim", methods=['POST'])
 def process_claim():
