@@ -9,9 +9,9 @@ fetch(serverUrl).then(response => response.json()).then(data => {
     const dataContainer = document.getElementById('evidenceContainer'); // should return container object
     // error in this area
     dataContainer.innerText = JSON.stringify(data);
+    console.log('Data: ', data);
 }).catch(error => {
     console.error('Error: ', error);
-    // TypeError: Failed to fetch
 });
 
 // Listen for messages from contentScript.js

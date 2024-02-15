@@ -75,11 +75,17 @@ def process_claim():
 def parse_evidence(evidence):
     # need to filter out the b' and the \ before each link
     # could probably split the results string at ]\r\ - only care about the links for now
-    result = evidence.split(']\r\n') # DOESN'T LIKE THIS KIND OF SPLIT - BYTE SIZE OBJECT NOT STRING GRRRR
-    result += "]"
+    print("RESULTS BEFORE: ", evidence)
+    result = str(evidence).replace("b'[", "[")
+    print("EVIDENCE ", result)
+    result = str(result).split("article") # DOESN'T LIKE THIS KIND OF SPLIT - BYTE SIZE OBJECT NOT STRING GRRRR
+    # result += "]"
     # should have a list of strings = example here: b'[\'https://www.bbc.co.uk/news/uk-67846863\', \'https://www.bbc.com/news/uk-67846863\', \'https://www.bbc.co.uk/news/uk-67851052.amp\', \'https://www.bbc.com/news/topics/cywd23g0gq0t\', \'https://news.yahoo.com/met-office-issues-warnings-wind-040234635.html\', \'https://www.bbc.com/news/business-67784709\', \'https://www.linkedin.com/posts/matt-battersby-b8117bb9_thousands-stranded-at-new-year-as-eurostar-activity-7146930889187356672-ty4o\', \'https://www.reddit.com/r/Eurostar/comments/18upqpx/thousands_stranded_at_new_year_as_eurostar/\', \'https://www.bbc.com/news/world-europe-67544997\']
     # need to remove the b' and the \ from each link
-    result = [link.replace("b'", "'").replace("\\", "") for link in result]
+    # result = [str(link).replace("b'", "'").replace("\\", "") for link in result]
+    # result = str(result).replace("]\r\n", "]")
+    result = str(result[0]).replace("]\\r\\n", "]")
+    print("RESULTS AFTER ", result)
     return result
 
 if __name__ == '__main__':
