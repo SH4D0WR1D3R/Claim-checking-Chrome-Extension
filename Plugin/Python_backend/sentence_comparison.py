@@ -1,6 +1,8 @@
 from dotenv import load_dotenv
 import os
 import requests
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
 
 class sentence_comparison:
     def __init__(self):
@@ -28,6 +30,13 @@ class sentence_comparison:
 
         else:
             print(f"Request failed with status code: {api_response.status_code}")
+
+    def cosine_similarity(self, sentence1, sentence2):
+        vectorizer = TfidfVectorizer()
+        vectors = vectorizer.fit_transform([sentence1, sentence2])
+        similarity = cosine_similarity(vectors[0], vectors[1])
+        return similarity[0][0]
         
 object = sentence_comparison()
 print(object.similar_topic("The sky is blue", "The sky is green"))
+print("COSINE ", object.cosine_similarity("The sky is blue", "The sky is green"))
