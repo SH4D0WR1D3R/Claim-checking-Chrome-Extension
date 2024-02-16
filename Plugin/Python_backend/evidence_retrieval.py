@@ -8,6 +8,7 @@ from scrapy.crawler import CrawlerProcess, CrawlerRunner
 from dotenv import load_dotenv
 import os
 from twisted.internet import reactor
+import re
 
 class evidence_retrieval_spider(scrapy.Spider):
     name = 'duckduckgo'
@@ -47,8 +48,24 @@ class evidence_retrieval_spider(scrapy.Spider):
         # print("\n\n", links, "\n\n") # testing
         # need to parse the list of tags to get the actual link
         new_links = self.parse_links(links)
+        new_new_links = []
 
-        print(new_links)
+        print("OLD_LINKS ", new_links)
+        # print(new_links)
+
+        for link in new_links:
+            
+            for domain in self.allowed_domains:
+                # if re.match(domain, link):
+                if domain in link:
+                    new_new_links.append(link)
+        
+                    
+
+        # print("LINKS", new_new_links)
+        # print("LINKS", new_links)
+        print(new_new_links)
+
 
         # for link in href_links:
         #     try:
@@ -57,7 +74,7 @@ class evidence_retrieval_spider(scrapy.Spider):
         #         pass
 
         # iterate through each link, call a function to parse the article
-        for link in new_links:
+        for link in new_new_links:
             yield scrapy.Request(url=link, callback=self.parse_article)
             # try:
             #     # store link in dict - will be link:claims pairing

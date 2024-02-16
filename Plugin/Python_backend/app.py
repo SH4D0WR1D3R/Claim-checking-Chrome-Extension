@@ -48,8 +48,9 @@ def process_html():
     top_sentences = claim_detection_object.find_top_sentences()
 
     # trigger rest of process here? evidence retrieval
+    
 
-    results = subprocess.Popen(['python', 'crawler.py', '--query', '"Thousands stranded at New Year as Eurostar cancelled"'], stdout=subprocess.PIPE).communicate()[0]
+    results = subprocess.Popen(['python', 'crawler.py', '--query', '"Kazakhstan"'], stdout=subprocess.PIPE).communicate()[0]
     print("RESULTS: ", results)
     # need to parse results still
     # example output
@@ -72,6 +73,8 @@ def process_claim():
     # maybe doesn't even need a check since the user wants it checked?
     return claim_text
 
+
+# NEED OUTPUT FROM CRAWLER TO BE A STANDARD FORMAT
 def parse_evidence(evidence):
     # need to filter out the b' and the \ before each link
     # could probably split the results string at ]\r\ - only care about the links for now

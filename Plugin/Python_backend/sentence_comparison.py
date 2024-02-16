@@ -39,4 +39,4 @@ class sentence_comparison:
         
 object = sentence_comparison()
 print(object.similar_topic("The sky is blue", "The sky is green"))
-print("COSINE ", object.cosine_similarity("The sky is blue", "The sky is green"))
+print("COSINE ", object.cosine_similarity("The sky is blue", "The sky is not blue"))
