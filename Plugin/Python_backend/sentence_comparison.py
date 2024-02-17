@@ -3,6 +3,7 @@ import os
 import requests
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
+from transformers import pipeline
 
 class sentence_comparison:
     def __init__(self):
@@ -36,7 +37,14 @@ class sentence_comparison:
         vectors = vectorizer.fit_transform([sentence1, sentence2])
         similarity = cosine_similarity(vectors[0], vectors[1])
         return similarity[0][0]
+    
+    def test_sentiment_analysis(self, sentence):
+        model_path = "cardiffnlp/twitter-roberta-base-sentiment-latest"
+        sentiment_task = pipeline("sentiment-analysis", model=model_path, tokenizer=model_path)
+        return sentiment_task(sentence)
+
         
 object = sentence_comparison()
 print(object.similar_topic("The sky is blue", "The sky is green"))
 print("COSINE ", object.cosine_similarity("The sky is blue", "The sky is not blue"))
+print(object.test_sentiment_analysis("An HS1 spokesperson added on Saturday evening: \"We are doing everything possible to restore services but this is proving challenging and will take time.\""))
