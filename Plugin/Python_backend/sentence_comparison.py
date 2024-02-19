@@ -41,7 +41,7 @@ class sentence_comparison:
     def test_sentiment_analysis(self, sentence):
         model_path = "cardiffnlp/twitter-roberta-base-sentiment-latest"
         sentiment_task = pipeline("sentiment-analysis", model=model_path, tokenizer=model_path)
-        return sentiment_task(sentence)
+        return sentiment_task(sentence) # s a list of a dictionary
 
         
 object = sentence_comparison()
