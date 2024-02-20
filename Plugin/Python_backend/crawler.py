@@ -17,3 +17,4 @@ if __name__ == "__main__":
     args = parser.parse_args()
     query = args.query
     results = gather_evidence(query)
+    print("HI")

@@ -26,9 +26,6 @@ class evidence_retrieval_spider(scrapy.Spider):
         self.search_term = search_term
         load_dotenv()
         self.api_key = os.environ['CLAIMBUSTER_API_KEY']
-        # with open(self.html_file_name, "r", encoding="utf-8") as self.open_evidence_file:
-        #     html_content = temp_html_file.read()
-        # self.open_evidence_file.open(self.evidence_file, "w")
 
 
     # method to start the scraping
@@ -42,16 +39,13 @@ class evidence_retrieval_spider(scrapy.Spider):
     def parse_search_results(self, response):
         soup = BeautifulSoup(response.body, 'html.parser')
         # want to look for result_url class - duck duck go specific - holds full link
-        # href_links = [a.get('href') for a in soup.find_all('a', href=True)]
 
         links = soup.find_all('a', class_="result__url")
-        # print("\n\n", links, "\n\n") # testing
         # need to parse the list of tags to get the actual link
         new_links = self.parse_links(links)
         new_new_links = []
 
-        print("OLD_LINKS ", new_links)
-        # print(new_links)
+        # print("OLD_LINKS ", new_links)
 
         for link in new_links:
             
@@ -59,28 +53,14 @@ class evidence_retrieval_spider(scrapy.Spider):
                 # if re.match(domain, link):
                 if domain in link:
                     new_new_links.append(link)
+
+        print("The next line are links from evidence_retrieval: ")
         
-                    
-
-        # print("LINKS", new_new_links)
-        # print("LINKS", new_links)
         print(new_new_links)
-
-
-        # for link in href_links:
-        #     try:
-        #         yield scrapy.Request(url=link, callback=self.parse_article)
-        #     except:
-        #         pass
 
         # iterate through each link, call a function to parse the article
         for link in new_new_links:
             yield scrapy.Request(url=link, callback=self.parse_article)
-            # try:
-            #     # store link in dict - will be link:claims pairing
-            #     yield scrapy.Request(url=link, callback=self.parse_article)
-            # except:
-            #     pass
 
     def get_link(self, link):
         return "https://" + str(link).split("</a>")[0].split(">")[-1].strip()
