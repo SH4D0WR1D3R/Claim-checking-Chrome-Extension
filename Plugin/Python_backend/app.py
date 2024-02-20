@@ -63,6 +63,11 @@ def process_html():
 
     results = parse_evidence(results)
     print("\n\n\n\n\n APP PARSE ", results) # It does still get stuff printing on the terminal - for example the print statement in parse_article function
+    # results currently is a string and not a list
+
+    for r in results:
+        print("R: ", r)
+        # get contents of each url - and remember to chop off the ' around each url
 
     # need to call a function to extract claims from articles found
 
@@ -86,18 +91,17 @@ def parse_evidence(evidence):
     # could probably split the results string at ]\r\ - only care about the links for now
     print("RESULTS BEFORE: ", evidence)
     result = str(evidence).replace("b'[", "[")
-    # print("EVIDENCE ", result)
     result = str(result).split("article") # DOESN'T LIKE THIS KIND OF SPLIT - BYTE SIZE OBJECT NOT STRING GRRRR
-    # result += "]"
     # should have a list of strings = example here: b'[\'https://www.bbc.co.uk/news/uk-67846863\', \'https://www.bbc.com/news/uk-67846863\', \'https://www.bbc.co.uk/news/uk-67851052.amp\', \'https://www.bbc.com/news/topics/cywd23g0gq0t\', \'https://news.yahoo.com/met-office-issues-warnings-wind-040234635.html\', \'https://www.bbc.com/news/business-67784709\', \'https://www.linkedin.com/posts/matt-battersby-b8117bb9_thousands-stranded-at-new-year-as-eurostar-activity-7146930889187356672-ty4o\', \'https://www.reddit.com/r/Eurostar/comments/18upqpx/thousands_stranded_at_new_year_as_eurostar/\', \'https://www.bbc.com/news/world-europe-67544997\']
     # need to remove the b' and the \ from each link
-    # result = [str(link).replace("b'", "'").replace("\\", "") for link in result]
     result = result[0]
     result = str(result).replace("]\\r\\n", "]")
     result = str(result).replace('b"', "")
-    # result = str(result[0]).replace("]\\r\\n", ']"')
     result = result.split("\\r\\n")
     result = result[1]
+    result = result.replace("]", "")
+    result = result.replace("[", "")
+    result = result.split(",")
     print("RESULTS AFTER ", result)
     return result
 

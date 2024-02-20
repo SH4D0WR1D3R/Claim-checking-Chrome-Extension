@@ -54,9 +54,10 @@ class evidence_retrieval_spider(scrapy.Spider):
                 if domain in link:
                     new_new_links.append(link)
 
+        # DO NOT REMOVE THE FOLLOWING PRINT STATEMENTS - they are used in app.py when calling the spider to get results
         print("The next line are links from evidence_retrieval: ")
         
-        print(new_new_links)
+        print(new_new_links) 
 
         # iterate through each link, call a function to parse the article
         for link in new_new_links:
