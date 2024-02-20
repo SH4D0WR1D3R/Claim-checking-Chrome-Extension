@@ -17,6 +17,3 @@ if __name__ == "__main__":
     args = parser.parse_args()
     query = args.query
     results = gather_evidence(query)
-    # print("CRAWLER PRINTING")
-    # print(f" \n\n\n\n\n\n\n\n {results}")
-    # evidence_retrieval_object = evidence_retrieval(query)
