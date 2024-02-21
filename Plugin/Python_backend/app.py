@@ -23,7 +23,10 @@ load_dotenv()
 # DEFAULT URL
 @app.route("/")
 def default():
-    return jsonify({'message': 'Waiting for processes to run'})
+    # NEED TO CALL /process_html PART
+    # return jsonify({'message': 'Waiting for processes to run'})
+    # return jsonify(process_html())
+    return jsonify({'message': process_html()})
 
 @app.route("/process_html", methods=['POST'])
 def process_html():
@@ -63,7 +66,6 @@ def process_html():
 
     results = parse_evidence(results)
     print("\n\n\n\n\n APP PARSE ", results) # It does still get stuff printing on the terminal - for example the print statement in parse_article function
-    # results currently is a string and not a list
 
     for r in results:
         print("R: ", r)
@@ -71,7 +73,8 @@ def process_html():
 
     # need to call a function to extract claims from articles found
 
-    return jsonify({'message': 'HTML processed successfully'})
+    return results
+    # return jsonify({'message': 'HTML processed successfully'})
     # should return list of evidence/articles?
 
 
