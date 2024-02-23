@@ -24,9 +24,9 @@ load_dotenv()
 @app.route("/")
 def default():
     # NEED TO CALL /process_html PART
-    # return jsonify({'message': 'Waiting for processes to run'})
+    return jsonify({'message': 'Waiting for processes to run'})
     # return jsonify(process_html())
-    return jsonify({'message': process_html()})
+    # return jsonify({'message': process_html()})
 
 @app.route("/process_html", methods=['POST'])
 def process_html():

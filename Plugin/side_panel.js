@@ -8,7 +8,7 @@ const serverUrl = 'http://localhost:5000/'
 fetch(serverUrl).then(response => response.json()).then(data => {
     // process and display data in your extension UI
     console.log('Data start: ', data);
-    const dataContainer = document.getElementById('evidenceContainer'); // should return container object
+    const dataContainer = document.getElementById('articleBriefContainer'); // should return container object
     // error in this area
     console.log('Data Container: ', dataContainer);
     dataContainer.innerText = JSON.stringify(data);
@@ -17,6 +17,14 @@ fetch(serverUrl).then(response => response.json()).then(data => {
 }).catch(error => {
     console.error('Error: ', error);
 });
+
+// NEED A SEPARATE PROCESS TO DISPLAY RESULTS IN EVIDENCECONTAINER
+// fetch(serverUrl.concat('process_html')).then(response => response.json()).then(data => {
+//     const dataContainer = document.getElementById('evidenceContainer');
+//     dataContainer.innerText = JSON.stringify(data);
+// }).catch(error => {
+//     console.error('Error: ', error);
+// });
 
 // Listen for messages from contentScript.js
 // this section of code is waiting for the html content of the active tab
@@ -35,6 +43,12 @@ chrome.runtime.onConnect.addListener((port) => {
                 body: JSON.stringify({html: htmlContent})
             }).then(response => {
                 console.log('HTML content sent to Python backend');
+                const dataContainer = document.getElementById('evidenceContainer');
+                dataContainer.innerText = 'Processing...';
+                // dataContainer.innerText += response.data;
+                // NEED TO GET THE RESPONSE FROM THE PYTHON BACKEND HERE AND OUTPUT IT IN EVIDENCECONTAINER HERE
+                // dataContainer.innerText = response.body;
+                dataContainer.innerText = JSON.stringify(response);
             }).catch(error => {
                 console.error('Error sending HTML content: ', error);
             });
