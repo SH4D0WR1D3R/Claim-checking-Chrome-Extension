@@ -20,6 +20,7 @@ CORS(app, resources={r"/*": {"origins": "*"}})
 load_dotenv()
 
 evidence = []
+top_claims = []
 
 
 # DEFAULT URL
@@ -52,9 +53,11 @@ def process_html():
     # get sentences with scores over a defined threshold - means they are claim worthy/worth verifying
     top_sentences = claim_detection_object.find_top_sentences()
 
+    top_claims = top_sentences
+
     # trigger rest of process here? evidence retrieval
     
-
+    
     results = subprocess.Popen(['python', 'crawler.py', '--query', '"Kazakhstan"'], stdout=subprocess.PIPE).communicate()[0]
     # this is currently extracting evidence from the urls
     print("RESULTS: ", results)
@@ -74,10 +77,16 @@ def process_html():
         # get contents of each url - and remember to chop off the ' around each url
 
     # need to call a function to extract claims from articles found
-    evidence = results
+    evidence.append({"Kazakhstan": results})
+    
     return results
     # return jsonify({'message': 'HTML processed successfully'})
     # should return list of evidence/articles?
+
+@app.route("/retrieve_top_claims", methods=['GET'])
+def retrieve_top_claims():
+    print("TOP CLAIMS ", top_claims)
+    return top_claims
 
 
 @app.route("/process_claim", methods=['POST'])
