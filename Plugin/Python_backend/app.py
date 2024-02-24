@@ -19,6 +19,8 @@ CORS(app, resources={r"/*": {"origins": "*"}})
 
 load_dotenv()
 
+evidence = []
+
 
 # DEFAULT URL
 @app.route("/")
@@ -72,7 +74,7 @@ def process_html():
         # get contents of each url - and remember to chop off the ' around each url
 
     # need to call a function to extract claims from articles found
-
+    evidence = results
     return results
     # return jsonify({'message': 'HTML processed successfully'})
     # should return list of evidence/articles?

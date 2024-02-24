@@ -48,7 +48,10 @@ chrome.runtime.onConnect.addListener((port) => {
                 // dataContainer.innerText += response.data;
                 // NEED TO GET THE RESPONSE FROM THE PYTHON BACKEND HERE AND OUTPUT IT IN EVIDENCECONTAINER HERE
                 // dataContainer.innerText = response.body;
-                dataContainer.innerText = JSON.stringify(response);
+                // dataContainer.innerText = JSON.stringify(response); // results in {}
+            }).then(data => {
+                const dataContainer = document.getElementById('evidenceContainer');
+                dataContainer.innerText = JSON.stringify(data);
             }).catch(error => {
                 console.error('Error sending HTML content: ', error);
             });
