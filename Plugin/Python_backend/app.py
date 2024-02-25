@@ -19,6 +19,7 @@ CORS(app, resources={r"/*": {"origins": "*"}})
 
 load_dotenv()
 
+global evidence
 evidence = []
 global retrieve_top_claims
 top_claims = []
@@ -59,6 +60,9 @@ def process_html():
 
     # trigger rest of process here? evidence retrieval
     
+    # for claim in top_sentences:
+
+    global evidence
     
     results = subprocess.Popen(['python', 'crawler.py', '--query', '"Kazakhstan"'], stdout=subprocess.PIPE).communicate()[0]
     # this is currently extracting evidence from the urls
@@ -80,8 +84,10 @@ def process_html():
 
     # need to call a function to extract claims from articles found
     evidence.append({"Kazakhstan": results})
+
     
-    return results
+    
+    return evidence
     # return jsonify({'message': 'HTML processed successfully'})
     # should return list of evidence/articles?
 
@@ -96,6 +102,11 @@ def retrieve_top_claims():
     print("TOP CLAIMS ", top_claims) # TOP CLAIMS ISN'T GETTING UPDATED - LOOK INTO
     return top_claims
     # return ["hi"]
+
+@app.route("/retrieve_evidence", methods=['GET'])
+def retrieve_evidence():
+    print("EVIDENCE ", evidence)
+    return evidence
 
 
 @app.route("/process_claim", methods=['POST'])
