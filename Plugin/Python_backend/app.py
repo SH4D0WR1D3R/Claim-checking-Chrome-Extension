@@ -20,6 +20,7 @@ CORS(app, resources={r"/*": {"origins": "*"}})
 load_dotenv()
 
 evidence = []
+global retrieve_top_claims
 top_claims = []
 
 
@@ -53,6 +54,7 @@ def process_html():
     # get sentences with scores over a defined threshold - means they are claim worthy/worth verifying
     top_sentences = claim_detection_object.find_top_sentences()
 
+    global top_claims
     top_claims = top_sentences
 
     # trigger rest of process here? evidence retrieval
@@ -83,10 +85,17 @@ def process_html():
     # return jsonify({'message': 'HTML processed successfully'})
     # should return list of evidence/articles?
 
+# NEED TO TRIGGER AFTER TOP_CLAIMS HAS BEEN UPDATED
 @app.route("/retrieve_top_claims", methods=['GET'])
 def retrieve_top_claims():
-    print("TOP CLAIMS ", top_claims)
+    # while True: # dangerous
+    #     if top_claims:
+    #         print("TOP CLAIMS ", top_claims)
+    #         # return ["hi"]
+    #         return ["hi"]
+    print("TOP CLAIMS ", top_claims) # TOP CLAIMS ISN'T GETTING UPDATED - LOOK INTO
     return top_claims
+    # return ["hi"]
 
 
 @app.route("/process_claim", methods=['POST'])

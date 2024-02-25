@@ -18,6 +18,8 @@ fetch(serverUrl).then(response => response.json()).then(data => {
     console.error('Error: ', error);
 });
 
+
+
 // NEED A SEPARATE PROCESS TO DISPLAY RESULTS IN EVIDENCECONTAINER
 // fetch(serverUrl.concat('process_html')).then(response => response.json()).then(data => {
 //     const dataContainer = document.getElementById('evidenceContainer');
@@ -49,9 +51,16 @@ chrome.runtime.onConnect.addListener((port) => {
                 // NEED TO GET THE RESPONSE FROM THE PYTHON BACKEND HERE AND OUTPUT IT IN EVIDENCECONTAINER HERE
                 // dataContainer.innerText = response.body;
                 // dataContainer.innerText = JSON.stringify(response); // results in {}
-            }).then(data => {
-                const dataContainer = document.getElementById('evidenceContainer');
-                dataContainer.innerText = JSON.stringify(data);
+            // }).then(data => {
+            //     const dataContainer = document.getElementById('evidenceContainer');
+            //     dataContainer.innerText = JSON.stringify(data);
+                fetch(serverUrl.concat('retrieve_top_claims')).then(response => response.json()).then(data => {
+                    const dataContainer = document.getElementById('evidenceContainer');
+                    dataContainer.innerText = JSON.stringify(data);
+                
+                }).catch(error => {
+                    console.error('Error: ', error);
+                });
             }).catch(error => {
                 console.error('Error sending HTML content: ', error);
             });
