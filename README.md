@@ -12,4 +12,4 @@ This project aims to detect claims and factual statements made in online news ar
 Should run Plugin\Python_backend\app.py as a local server for this extension to operate. Should be running in Python 3.
 Need to add the whole folder to the Chrome Extension development
 
-
+proj-ebruary
