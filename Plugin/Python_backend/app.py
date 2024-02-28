@@ -29,7 +29,7 @@ top_claims = []
 @app.route("/")
 def default():
     # NEED TO CALL /process_html PART
-    return jsonify({'message': 'Waiting for processes to run'})
+    return jsonify({'message': 'Waiting for processes to run'}) # WANT TO REMOVE
     # return jsonify(process_html())
     # return jsonify({'message': process_html()})
 
@@ -57,14 +57,26 @@ def process_html():
 
     global top_claims
     top_claims = top_sentences
+    print("TOP_SENTENCES ", top_sentences)
 
     # trigger rest of process here? evidence retrieval
     
-    # for claim in top_sentences:
-
     global evidence
-    
-    results = subprocess.Popen(['python', 'crawler.py', '--query', '"Kazakhstan"'], stdout=subprocess.PIPE).communicate()[0]
+
+    # for claim in top_sentences:
+    #     print("CLAIM : ", claim)
+    #     results = subprocess.Popen(['python', 'crawler.py', '--query', claim['text']], stdout=subprocess.PIPE).communicate()[0]
+    #     print("RESULTS FOR CLAIM ", claim, " : ", results)
+    #     print("\n\n\n END")
+    #     results = parse_evidence(results)
+    #     evidence.append({claim['text']: results})
+
+    # return evidence
+    # claim = "New year plans for thousands have been thrown into chaos after Eurostar cancelled all its services to and from London St Pancras due to flooding in a tunnel under the River Thames."
+    claim = top_sentences[0]['text']
+
+    # MAKE CLAIM AN INDEX POSITION IN TOP_SENTENCES DICTIONARY
+    results = subprocess.Popen(['python', 'crawler.py', '--query', claim], stdout=subprocess.PIPE).communicate()[0]
     # this is currently extracting evidence from the urls
     print("RESULTS: ", results)
     # need to parse results still
@@ -83,7 +95,7 @@ def process_html():
         # get contents of each url - and remember to chop off the ' around each url
 
     # need to call a function to extract claims from articles found
-    evidence.append({"Kazakhstan": results})
+    evidence.append({claim: results})
 
     
     

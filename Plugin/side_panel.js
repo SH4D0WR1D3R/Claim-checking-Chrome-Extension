@@ -47,17 +47,10 @@ chrome.runtime.onConnect.addListener((port) => {
                 console.log('HTML content sent to Python backend');
                 const dataContainer = document.getElementById('evidenceContainer');
                 dataContainer.innerText = 'Processing...';
-                // dataContainer.innerText += response.data;
-                // NEED TO GET THE RESPONSE FROM THE PYTHON BACKEND HERE AND OUTPUT IT IN EVIDENCECONTAINER HERE
-                // dataContainer.innerText = response.body;
-                // dataContainer.innerText = JSON.stringify(response); // results in {}
-            // }).then(data => {
-            //     const dataContainer = document.getElementById('evidenceContainer');
-            //     dataContainer.innerText = JSON.stringify(data);
-                fetch(serverUrl.concat('retrieve_top_claims')).then(response => response.json()).then(data => {
+                fetch(serverUrl.concat('retrieve_evidence')).then(response => response.json()).then(data => {
                     const dataContainer = document.getElementById('evidenceContainer');
                     dataContainer.innerText = JSON.stringify(data);
-                
+                    // NEED TO FORMAT NICELY - i love you - josh
                 }).catch(error => {
                     console.error('Error: ', error);
                 });
