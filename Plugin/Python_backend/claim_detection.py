@@ -77,7 +77,8 @@ class claim_detection:
         top_results = []
         if results:
             for result in results:
-                if result.get("score") > 0.5:
+                # TO DO: want to change to just be top 3
+                if result.get("score") > 0.7:
                     top_results += [result]
 
         print("TOP RESULTS ", top_results)
