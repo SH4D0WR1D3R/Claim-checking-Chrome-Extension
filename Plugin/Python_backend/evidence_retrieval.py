@@ -45,7 +45,6 @@ class evidence_retrieval_spider(scrapy.Spider):
         new_links = self.parse_links(links)
         new_new_links = []
 
-        # print("OLD_LINKS ", new_links)
 
         for link in new_links:
             
@@ -84,11 +83,8 @@ class evidence_retrieval_spider(scrapy.Spider):
                 article_text += paragraph.text
 
             # now we have the text, need to pick claims out of it to compare
-            # self.evidence_and_articles_text[link] = self.extract_claims(article_text)
             self.results[link] = self.extract_claims(article_text)
-            # result = self.evidence_and_articles_text
 
-        # print("DICT", self.evidence_and_articles_text)
 
     def extract_claims(self, article_text):
         article_text = article_text.replace(".", ". ")
@@ -109,7 +105,7 @@ def run_spider(search_term):
     process.start()
     return evidence_retrieval_spider.results
 
-# runner = CrawlerRunner()
-# d = runner.crawl(evidence_retrieval_spider, search_term="Thousands stranded at New Year as Eurostar cancelled")
-# d.addBoth(lambda _: reactor.stop())
-# reactor.run()
+runner = CrawlerRunner()
+d = runner.crawl(evidence_retrieval_spider, search_term="Thousands stranded at New Year as Eurostar cancelled")
+d.addBoth(lambda _: reactor.stop())
+reactor.run()

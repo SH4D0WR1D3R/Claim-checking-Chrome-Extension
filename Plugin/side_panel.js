@@ -51,6 +51,8 @@ chrome.runtime.onConnect.addListener((port) => {
                     const dataContainer = document.getElementById('evidenceContainer');
                     dataContainer.innerText = JSON.stringify(data);
                     // NEED TO FORMAT NICELY - i love you - josh
+                    // JSON.PARSE
+                    // turn stuff into classes 
                 }).catch(error => {
                     console.error('Error: ', error);
                 });

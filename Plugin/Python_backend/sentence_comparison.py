@@ -52,6 +52,7 @@ class sentence_comparison:
         
 object = sentence_comparison()
 # print(object.similar_topic("The sky is blue", "The sky is green"))
+
 # print("COSINE ", object.cosine_similarity("The sky is blue", "The sky is not blue"))
 # print(object.sentiment_analysis("An HS1 spokesperson added on Saturday evening: \"We are doing everything possible to restore services but this is proving challenging and will take time.\""))
 # print(object.sentences_agree("The sky is blue", "The sky is not blue"))
