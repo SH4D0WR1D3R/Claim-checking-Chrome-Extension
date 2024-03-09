@@ -105,7 +105,7 @@ def run_spider(search_term):
     process.start()
     return evidence_retrieval_spider.results
 
-runner = CrawlerRunner()
-d = runner.crawl(evidence_retrieval_spider, search_term="Thousands stranded at New Year as Eurostar cancelled")
-d.addBoth(lambda _: reactor.stop())
-reactor.run()
+# runner = CrawlerRunner()
+# d = runner.crawl(evidence_retrieval_spider, search_term="Thousands stranded at New Year as Eurostar cancelled")
+# d.addBoth(lambda _: reactor.stop())
+# reactor.run()

@@ -16,8 +16,8 @@ class sentence_comparison:
         # call cosine similarity function
         cosine_similarity_result = self.cosine_similarity(sentence1, sentence2)
         # if cosine similarity result is < 0.75 return false
-        if cosine_similarity_result < 0.75:
-            return {"agreement": "not related", "cosine_similarity": cosine_similarity_result, "sentiment_analysis_1": 0, "sentiment_analysis_2": 0}
+        # if cosine_similarity_result < 0.75:
+        #     return {"agreement": "not related", "cosine_similarity": cosine_similarity_result, "sentiment_analysis_1": 0, "sentiment_analysis_2": 0}
         # else call sentiment analysis function on each sentence
         sentiment_analysis_1 = self.sentiment_analysis(sentence1)
         sentiment_analysis_2 = self.sentiment_analysis(sentence2)

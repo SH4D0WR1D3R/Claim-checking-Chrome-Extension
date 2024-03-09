@@ -104,14 +104,8 @@ def process_html():
 # NEED TO TRIGGER AFTER TOP_CLAIMS HAS BEEN UPDATED
 @app.route("/retrieve_top_claims", methods=['GET'])
 def retrieve_top_claims():
-    # while True: # dangerous
-    #     if top_claims:
-    #         print("TOP CLAIMS ", top_claims)
-    #         # return ["hi"]
-    #         return ["hi"]
     print("TOP CLAIMS ", top_claims) # TOP CLAIMS ISN'T GETTING UPDATED - LOOK INTO
     return top_claims
-    # return ["hi"]
 
 @app.route("/retrieve_evidence", methods=['GET'])
 def retrieve_evidence():

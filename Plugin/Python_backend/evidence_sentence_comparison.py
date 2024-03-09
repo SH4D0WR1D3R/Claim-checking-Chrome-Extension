@@ -72,7 +72,7 @@ class evidence_sentence_comparison():
         # need judgement of each top claim
         for claim in top_claims:
             judgement = self.sentence_comparison_object.sentences_agree(self.claim, claim['text'])
-            self.judgements.append(judgement)
+            self.judgements.append({claim['text']:judgement})
         # not sure what to do here to get a judgement on a piece of evidence
 
 
