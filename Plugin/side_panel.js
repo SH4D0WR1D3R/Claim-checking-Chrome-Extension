@@ -4,6 +4,41 @@
 // Send HTML to Python backend
 const serverUrl = 'http://localhost:5000/'
 
+function displayData(data){
+    const container = document.getElementById('evidenceContainer');
+    data.forEach(event => {
+        for (const [description, sources] of Object.entries(event)) {
+            const eventDiv = document.createElement('div');
+            eventDiv.classList.add('article');
+            const descriptionHeader = document.createElement('h2');
+            descriptionHeader.textContent = description;
+            eventDiv.appendChild(descriptionHeader);
+
+            sources.forEach(source => {
+                for (const [url, articles] of Object.entries(source)) {
+                    const sourceLink = document.createElement('a');
+                    sourceLink.href = url;
+                    sourceLink.textContent = url;
+                    eventDiv.appendChild(sourceLink);
+
+                    articles.forEach(article => {
+                        for (const [headline, details] of Object.entries(article)) {
+                            const headlineElement = document.createElement('h3');
+                            headlineElement.textContent = headline;
+                            eventDiv.appendChild(headlineElement);
+
+                            const detailsParagraph = document.createElement('p');
+                            detailsParagraph.textContent = JSON.stringify(details, null, 2);
+                            eventDiv.appendChild(detailsParagraph);
+                        }
+                    });
+                }
+            });
+            container.appendChild(eventDiv);
+        }
+    })
+}
+
 // This is what helps display info on the extension
 fetch(serverUrl).then(response => response.json()).then(data => {
     // process and display data in your extension UI
@@ -12,6 +47,9 @@ fetch(serverUrl).then(response => response.json()).then(data => {
     // error in this area
     console.log('Data Container: ', dataContainer);
     dataContainer.innerText = JSON.stringify(data);
+    // const dataTemp = JSON.stringify(data);
+    // const temp = JSON.parse(data);
+    // displayData(data);
     // console.log('Data: ', data);
     console.log('Data: ', data);
 }).catch(error => {
@@ -86,3 +124,5 @@ function fetchClaimInput(){
 
 // document.getElementById("demo").addEventListener("click", myFunction);
 document.getElementById("checkClaimButton").addEventListener("click", fetchClaimInput);
+
+

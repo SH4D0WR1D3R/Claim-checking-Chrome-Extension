@@ -33,12 +33,6 @@ class evidence_retrieval:
 
         print(new_links)
 
-        # for link in href_links:
-        #     try:
-        #         yield scrapy.Request(url=link, callback=self.parse_article)
-        #     except:
-        #         pass
-
         # iterate through each link, call a function to parse the article
         for link in new_links:
             yield scrapy.Request(url=link, callback=self.parse_article)

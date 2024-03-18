@@ -67,7 +67,6 @@ def process_html():
     # return evidence
     sorted_top_claims = sorted(top_claims, key=lambda x: x['score'])
     sorted_top_claims = sorted_top_claims[:3]
-    # claim = top_sentences[0]['text'] # currently the only claim being operated on is the first claim from an article
     for claim in sorted_top_claims:
         claim = claim['text']
         results = subprocess.Popen(['python', 'crawler.py', '--query', claim], stdout=subprocess.PIPE).communicate()[0]
