@@ -1,0 +1,24 @@
+{
+    "manifest_version": 3,
+    "name": "Frontend tester",
+    "description": "Trying to make the frontend of my fact checker look nice",
+    "version": "1.0",
+    "permissions": [
+        "activeTab",
+        "browsingData",
+        "search",
+        "sidePanel",
+        "scripting"
+    ],
+    "host_permissions": [
+        "http://127.0.0.1:5000/",
+        "http://*/*",
+        "https://*/*"
+    ],
+    "side_panel": {
+        "default_path": "display.html"
+    },
+    "background": {
+        "service_worker": "service_worker.js"
+    }
+}

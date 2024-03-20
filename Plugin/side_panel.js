@@ -5,7 +5,7 @@
 const serverUrl = 'http://localhost:5000/'
 
 function displayData(data){
-    const container = document.getElementById('evidenceContainer');
+    const container = document.getElementById('Processed Evidence');
     data.forEach(event => {
         for (const [description, sources] of Object.entries(event)) {
             const eventDiv = document.createElement('div');
@@ -37,6 +37,14 @@ function displayData(data){
             container.appendChild(eventDiv);
         }
     })
+}
+
+function displayData2(data){
+    const container = document.getElementById('Processed Evidence');
+    length = data.length;
+    for (i=0; i<length; i++){
+        // TO DO
+    }
 }
 
 // This is what helps display info on the extension
@@ -83,10 +91,10 @@ chrome.runtime.onConnect.addListener((port) => {
                 body: JSON.stringify({html: htmlContent})
             }).then(response => {
                 console.log('HTML content sent to Python backend');
-                const dataContainer = document.getElementById('evidenceContainer');
+                const dataContainer = document.getElementById('Processed Evidence');
                 dataContainer.innerText = 'Processing...';
                 fetch(serverUrl.concat('retrieve_evidence')).then(response => response.json()).then(data => {
-                    const dataContainer = document.getElementById('evidenceContainer');
+                    const dataContainer = document.getElementById('Processed Evidence');
                     dataContainer.innerText = JSON.stringify(data);
                     // NEED TO FORMAT NICELY - i love you - josh
                     // JSON.PARSE
