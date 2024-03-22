@@ -58,7 +58,7 @@ class claim_detection:
         api_response = requests.get(url=endpoint_url, headers=request_headers)
         if api_response.status_code == 200:
             self.ranked_sentences = api_response.json()
-            print("SENTENCES ", self.ranked_sentences)
+            # print("SENTENCES ", self.ranked_sentences)
             return self.ranked_sentences
         else:
             print(f"Request failed with status code: {api_response.status_code}")
@@ -72,7 +72,7 @@ class claim_detection:
 
     # from the sentences that have been given a rate, filter out any that are below 0.5
     def find_top_sentences(self):
-        print("RESULTS ", self.ranked_sentences.get("results"))
+        # print("RESULTS ", self.ranked_sentences.get("results"))
         results = self.ranked_sentences.get("results")
         top_results = []
         if results:
@@ -81,7 +81,7 @@ class claim_detection:
                 if result.get("score") > 0.7:
                     top_results += [result]
 
-        print("TOP RESULTS ", top_results)
+        # print("TOP RESULTS ", top_results)
         return top_results
     
     def test_similarity_score(self, claimA, claimB):
@@ -90,7 +90,7 @@ class claim_detection:
         api_response = requests.get(url=endpoint_url, headers=request_headers)
         if api_response.status_code == 200:
             similarity_score = api_response.json()
-            print("SIMILARITY SCORE ", similarity_score)
+            # print("SIMILARITY SCORE ", similarity_score)
             return similarity_score
         else:
             print(f"Request failed with status code: {api_response.status_code}")

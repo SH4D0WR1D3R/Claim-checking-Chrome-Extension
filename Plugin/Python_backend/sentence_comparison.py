@@ -33,8 +33,8 @@ class sentence_comparison:
     
     def cosine_similarity(self, sentence1, sentence2):
         vectorizer = TfidfVectorizer()
-        print("SENTENCE 1: ", sentence1)
-        print("SENTENCE 2: ", sentence2)
+        # print("SENTENCE 1: ", sentence1)
+        # print("SENTENCE 2: ", sentence2)
         vectors = vectorizer.fit_transform([sentence1, sentence2])
         similarity = cosine_similarity(vectors[0], vectors[1])
         return similarity[0][0]
@@ -50,7 +50,7 @@ class sentence_comparison:
     
 
         
-object = sentence_comparison()
+# object = sentence_comparison()
 # print(object.similar_topic("The sky is blue", "The sky is green"))
 
 # print("COSINE ", object.cosine_similarity("The sky is blue", "The sky is not blue"))
