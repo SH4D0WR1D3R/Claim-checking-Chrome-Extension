@@ -33,8 +33,6 @@ class sentence_comparison:
     
     def cosine_similarity(self, sentence1, sentence2):
         vectorizer = TfidfVectorizer()
-        # print("SENTENCE 1: ", sentence1)
-        # print("SENTENCE 2: ", sentence2)
         vectors = vectorizer.fit_transform([sentence1, sentence2])
         similarity = cosine_similarity(vectors[0], vectors[1])
         return similarity[0][0]

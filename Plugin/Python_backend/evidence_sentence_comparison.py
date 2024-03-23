@@ -20,7 +20,7 @@ class evidence_sentence_comparison():
         self.sentence_comparison_object = sentence_comparison.sentence_comparison()
         self.top_claims = []
         self.sorted_top_claims = []
-        self.judgements = []
+        self.judgements = ""
         self.ranked_sentences = {}
 
     def run(self):
@@ -56,24 +56,33 @@ class evidence_sentence_comparison():
 
     def get_top_claims(self):
         results = self.ranked_sentences.get("results")
-        # top_results = []
-        lowest_score = 1
         if results:
             for result in results:
                 ## WORK ON 
                 if result.get("score") > 0.5:
                     self.top_claims += [result]
-            # sorted_list = sorted(list_of_dicts, key=lambda x: x['age'])
             self.sorted_top_claims = sorted(self.top_claims, key=lambda x: x['score'])
-            print("SORTED TOP CLAIMS ", self.sorted_top_claims)
+            # print("SORTED TOP CLAIMS ", self.sorted_top_claims)
         return self.top_claims[:5]
 
     def get_judgement(self, top_claims):
         # need judgement of each top claim
+        agree = 0
+        disagree = 0
         for claim in top_claims:
             judgement = self.sentence_comparison_object.sentences_agree(self.claim, claim['text'])
-            self.judgements.append({claim['text']:judgement})
+            if judgement['agreement'] == "agree":
+                agree += 1
+            elif judgement['agreement'] == "disagree":
+                disagree += 1
+            # self.judgements.append({claim['text']:judgement})
         # not sure what to do here to get a judgement on a piece of evidence
+        if agree > disagree:
+            self.judgements = "agree"
+        elif disagree > agree:
+            self.judgements = "disagree"
+        else:
+            self.judgements = "no judgement"
 
 
 # object = evidence_sentence_comparison("https://www.theguardian.com/business/video/2023/dec/30/extreme-flooding-in-tunnel-used-by-eurostar-halts-trains-video", "A video taken inside the flooded tunnel shows water gushing onto the tracks from a pipe attached to the tunnel's wall.")
