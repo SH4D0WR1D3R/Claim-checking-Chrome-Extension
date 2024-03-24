@@ -6,47 +6,15 @@ const serverUrl = 'http://localhost:5000/'
 
 function displayData(data){
     const container = document.getElementById('Processed Evidence');
-    data.forEach(event => {
-        for (const [description, sources] of Object.entries(event)) {
-            const eventDiv = document.createElement('div');
-            eventDiv.classList.add('article');
-            const descriptionHeader = document.createElement('h2');
-            descriptionHeader.textContent = description;
-            eventDiv.appendChild(descriptionHeader);
-
-            sources.forEach(source => {
-                for (const [url, articles] of Object.entries(source)) {
-                    const sourceLink = document.createElement('a');
-                    sourceLink.href = url;
-                    sourceLink.textContent = url;
-                    eventDiv.appendChild(sourceLink);
-
-                    articles.forEach(article => {
-                        for (const [headline, details] of Object.entries(article)) {
-                            const headlineElement = document.createElement('h3');
-                            headlineElement.textContent = headline;
-                            eventDiv.appendChild(headlineElement);
-
-                            const detailsParagraph = document.createElement('p');
-                            detailsParagraph.textContent = JSON.stringify(details, null, 2);
-                            eventDiv.appendChild(detailsParagraph);
-                        }
-                    });
-                }
-            });
-            container.appendChild(eventDiv);
-        }
-    })
-}
-
-function displayData2(data){
-    const container = document.getElementById('Processed Evidence');
     length = data.length;
     container.innerText = " ";
     
     for (i=0; i<length; i++){
         // TO DO
         container.innerText += JSON.stringify(data[i]) + "\n\n";
+
+        container.innerText += "Claim: " + data[i][0] + "\n"; // dictionary structure really shouldn't/doesn't work
+        // need to change the data structure
 
     }
 }
@@ -103,7 +71,7 @@ chrome.runtime.onConnect.addListener((port) => {
                 fetch(serverUrl.concat('retrieve_evidence')).then(response => response.json()).then(data => {
                     // const dataContainer = document.getElementById('Processed Evidence');
                     // dataContainer.innerText = JSON.stringify(data);
-                    displayData2(data);
+                    displayData(data);
                 }).catch(error => {
                     console.error('Error: ', error);
                 });
