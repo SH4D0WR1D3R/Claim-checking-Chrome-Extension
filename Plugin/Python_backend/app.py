@@ -29,11 +29,7 @@ top_claims = []
 # DEFAULT URL
 @app.route("/")
 def default():
-    # NEED TO CALL /process_html PART
-
     return jsonify({''}) # WANT TO REMOVE
-    # return jsonify(process_html())
-    # return jsonify({'message': process_html()})
 
 @app.route("/process_html", methods=['POST'])
 def process_html():

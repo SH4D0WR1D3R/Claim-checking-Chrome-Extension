@@ -13,7 +13,7 @@ function displayData(data){
         // TO DO
         container.innerText += JSON.stringify(data[i]) + "\n\n";
 
-        container.innerText += "Claim: " + data[i][0] + "\n"; // dictionary structure really shouldn't/doesn't work
+        // container.innerText += "Claim: " + data[i][0] + "\n"; // dictionary structure really shouldn't/doesn't work
         // need to change the data structure
 
     }
