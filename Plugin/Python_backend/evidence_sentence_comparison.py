@@ -12,10 +12,10 @@ class evidence_sentence_comparison():
     # run a comparison between the stored claim and each extracted claim
     # come to a judgement on the article and return that judgement with comparison scores
     def __init__(self, url, claim):
+        load_dotenv()
         self.url = url
         self.claim = claim
         self.article = ''
-        load_dotenv()
         self.api_key = os.environ['CLAIMBUSTER_API_KEY']
         self.sentence_comparison_object = sentence_comparison.sentence_comparison()
         self.top_claims = []
@@ -75,7 +75,6 @@ class evidence_sentence_comparison():
                 agree += 1
             elif judgement['agreement'] == "disagree":
                 disagree += 1
-            # self.judgements.append({claim['text']:judgement})
         # not sure what to do here to get a judgement on a piece of evidence
         if agree > disagree:
             self.judgements = "agree"
