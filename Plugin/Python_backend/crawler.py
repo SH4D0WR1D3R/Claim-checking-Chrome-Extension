@@ -1,3 +1,4 @@
+# file to use to trigger evidence retrieval process
 import argparse
 import evidence_retrieval as evidence_retrieval
 
@@ -6,12 +7,11 @@ def generate_crawler_parser():
     parser.add_argument('--query', type=str, help='websearch query to scrape', required=True)
     return parser
 
-
 def gather_evidence(query):
     results = evidence_retrieval.run_spider(query)
     return results
 
-
+# method to be triggered as a subprocess when needing to call the evidence retrieval process
 if __name__ == "__main__":
     parser = generate_crawler_parser()
     args = parser.parse_args()

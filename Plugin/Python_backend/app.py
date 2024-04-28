@@ -1,4 +1,4 @@
-# file which is connected to frontend
+# The application to run when wanting to run the fact checking process
 
 from flask import Flask, request, jsonify
 from flask_cors import CORS
@@ -15,6 +15,7 @@ from scrapy.signalmanager import dispatcher
 import subprocess
 import evidence_sentence_comparison
 
+# Initialising as a Flask app
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
@@ -25,26 +26,28 @@ evidence = []
 global retrieve_top_claims
 top_claims = []
 
-
 # DEFAULT URL
 @app.route("/")
 def default():
-    return jsonify({''}) # WANT TO REMOVE
+    return jsonify({''})
 
+# POST REQUEST TO PROCESS HTML - puts together all aspects of the fact checking pipeline and returns results
 @app.route("/process_html", methods=['POST'])
 def process_html():
+    # create an instance of the claim_detection class
     claim_detection_object = claim_detection.claim_detection()
     # get the html from the request
-    data = request.get_json()
-    html = data.get('html')
-    
+    data = request.get_json() # parses the incoming JSON request data from the HTTP POST request and returns it
+    html = data.get('html') 
 
+    # CLAIM DETECTION
+    
     # set the pure html in the claim_detection object
     claim_detection_object.set_article_html(html)
     # move html to a file
     claim_detection_object.convert_to_file()
     # filter the pure html down to just the article contents
-    title, article_content = claim_detection_object.filter_article_html() # TO DO: WHY IS IT CUTTING OUT THE END OF THE ARTICLE? (list)
+    title, article_content = claim_detection_object.filter_article_html()
     # rank each of the sentences in the article
     ranked_sentences = claim_detection_object.filter_sentences()
     # get sentences with scores over a defined threshold - means they are claim worthy/worth verifying
@@ -58,6 +61,8 @@ def process_html():
     sorted_top_claims = sorted(top_claims, key=lambda x: x['score'])
     sorted_top_claims = sorted_top_claims[:3]
     print("SORTED TOP CLAIMS: ", sorted_top_claims)
+
+    # EVIDENCE RETRIEVAL
     for claim in sorted_top_claims:
         claim = claim['text']
         results = subprocess.Popen(['python', 'crawler.py', '--query', claim], stdout=subprocess.PIPE).communicate()[0]
@@ -68,52 +73,38 @@ def process_html():
     # print("\n\n\n\n END")
     # Format of results: b"The next line are links from evidence_retrieval: \r\n[<strings of urls>]
         results = parse_evidence(results)
-
         # need to call a function to extract claims from articles found
         evidence_judgements = []
+
+        # ARTICLE JUDGEMENT
         for result in results:
+            # filter down results to be useable in comparison
             result = result.replace("'", "")
             sentence_object = evidence_sentence_comparison.evidence_sentence_comparison(result, claim)
             judgements = sentence_object.run()
             evidence_judgements.append({result: judgements})
         evidence.append({claim: evidence_judgements})
-
-
-    # probably want to just add to the evidence dictionary for sentence agreement
     
     return evidence
 
-# NEED TO TRIGGER AFTER TOP_CLAIMS HAS BEEN UPDATED
-# @app.route("/retrieve_top_claims", methods=['GET'])
-# def retrieve_top_claims():
-#     print("TOP CLAIMS ", top_claims) # TOP CLAIMS ISN'T GETTING UPDATED - LOOK INTO
-#     return top_claims
-
+# Method to return evidence from the global variable
 @app.route("/retrieve_evidence", methods=['GET'])
 def retrieve_evidence():
     print("EVIDENCE ", evidence)
     return evidence
 
-
+# Method to return claims from the global variable
 @app.route("/process_claim", methods=['POST'])
 def process_claim():
     claim = request.get_json()
     claim_text = claim.get('claim')
-    print("CLAIM TEXT: ", claim_text)
-    # trigger the check of if it's claim worthy
-    # maybe doesn't even need a check since the user wants it checked?
+    # print("CLAIM TEXT: ", claim_text)
     return claim_text
 
-
-# NEED OUTPUT FROM CRAWLER TO BE A STANDARD FORMAT
+# Method to strip retrieved evidence of tags and string components
 def parse_evidence(evidence):
-    # need to filter out the b' and the \ before each link
-    # could probably split the results string at ]\r\ - only care about the links for now
-    print("RESULTS BEFORE: ", evidence)
     result = str(evidence).replace("b'[", "[")
-    result = str(result).split("article") # DOESN'T LIKE THIS KIND OF SPLIT - BYTE SIZE OBJECT NOT STRING GRRRR
-    # should have a list of strings = example here: b'[\'https://www.bbc.co.uk/news/uk-67846863\', \'https://www.bbc.com/news/uk-67846863\', \'https://www.bbc.co.uk/news/uk-67851052.amp\', \'https://www.bbc.com/news/topics/cywd23g0gq0t\', \'https://news.yahoo.com/met-office-issues-warnings-wind-040234635.html\', \'https://www.bbc.com/news/business-67784709\', \'https://www.linkedin.com/posts/matt-battersby-b8117bb9_thousands-stranded-at-new-year-as-eurostar-activity-7146930889187356672-ty4o\', \'https://www.reddit.com/r/Eurostar/comments/18upqpx/thousands_stranded_at_new_year_as_eurostar/\', \'https://www.bbc.com/news/world-europe-67544997\']
-    # need to remove the b' and the \ from each link
+    result = str(result).split("article")
     result = result[0]
     result = str(result).replace("]\\r\\n", "]")
     result = str(result).replace('b"', "")
@@ -122,7 +113,6 @@ def parse_evidence(evidence):
     result = result.replace("]", "")
     result = result.replace("[", "")
     result = result.split(",")
-    print("RESULTS AFTER ", result)
     return result
 
 if __name__ == '__main__':

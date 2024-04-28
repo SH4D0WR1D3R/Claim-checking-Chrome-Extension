@@ -1,3 +1,4 @@
+# file to organise the comparison and judgement between two provided sentences
 from dotenv import load_dotenv
 import os
 import requests
@@ -6,10 +7,8 @@ from sklearn.metrics.pairwise import cosine_similarity
 from transformers import pipeline
 
 class sentence_comparison:
-
     def sentences_agree(self, sentence1, sentence2):
         # format of return: {agreement: <agree, disagree, neutral>, cosine_similarity: <float>, sentiment_analysis_1: <positive, negative, neutral>, sentiment_analysis_2: <positive, negative, neutral>}
-
         # call cosine similarity function
         cosine_similarity_result = self.cosine_similarity(sentence1, sentence2)
         # if cosine similarity result is < 0.75 return false
@@ -42,13 +41,3 @@ class sentence_comparison:
         # should return a dict of the form {'label': 'LABEL', 'score': SCORE}
         return sentiment_task(sentence)[0]
     
-    
-
-        
-# object = sentence_comparison()
-# print(object.similar_topic("The sky is blue", "The sky is green"))
-
-# print("COSINE ", object.cosine_similarity("The sky is blue", "The sky is not blue"))
-# print(object.sentiment_analysis("An HS1 spokesperson added on Saturday evening: \"We are doing everything possible to restore services but this is proving challenging and will take time.\""))
-# print(object.sentences_agree("The sky is blue", "The sky is not blue"))
-# print(object.sentences_agree("A video taken inside the flooded tunnel shows water gushing onto the tracks from a pipe attached to the tunnel's wall.", "A video taken inside the flooded tunnel shows water gushing onto the tracks from a pipe attached to the tunnel's wall."))

@@ -1,3 +1,4 @@
+# file to sort the comparisons between a claim and evidence retrieved for that claim - sorts article judgement
 import requests
 from bs4 import BeautifulSoup
 from dotenv import load_dotenv
@@ -23,6 +24,7 @@ class evidence_sentence_comparison():
         self.judgements = ""
         self.ranked_sentences = {}
 
+    # runs the article judgement process
     def run(self):
         self.get_article_text()
         self.claim_detection()
@@ -35,7 +37,6 @@ class evidence_sentence_comparison():
         response = requests.get(self.url)
         if response.status_code == 200:
             soup = BeautifulSoup(response.content, 'html.parser')
-            # article_content = ''
             article_body = soup.find('article')
             if article_body:
                 paragraphs = article_body.find_all('p')
@@ -54,17 +55,17 @@ class evidence_sentence_comparison():
         else:
             print(f"Request failed with status code: {api_response.status_code}")
 
+    # method to get the top claims ranked in a piece of text
     def get_top_claims(self):
         results = self.ranked_sentences.get("results")
         if results:
             for result in results:
-                ## WORK ON 
                 if result.get("score") > 0.5:
                     self.top_claims += [result]
             self.sorted_top_claims = sorted(self.top_claims, key=lambda x: x['score'])
-            # print("SORTED TOP CLAIMS ", self.sorted_top_claims)
         return self.top_claims[:5]
 
+    # determining overall judgement of a piece of evidence compared to a claim
     def get_judgement(self, top_claims):
         # need judgement of each top claim
         agree = 0
@@ -75,15 +76,10 @@ class evidence_sentence_comparison():
                 agree += 1
             elif judgement['agreement'] == "disagree":
                 disagree += 1
-        # not sure what to do here to get a judgement on a piece of evidence
         if agree > disagree:
             self.judgements = "agree"
         elif disagree > agree:
             self.judgements = "disagree"
         else:
             self.judgements = "no judgement"
-
-
-# object = evidence_sentence_comparison("https://www.theguardian.com/business/video/2023/dec/30/extreme-flooding-in-tunnel-used-by-eurostar-halts-trains-video", "A video taken inside the flooded tunnel shows water gushing onto the tracks from a pipe attached to the tunnel's wall.")
-# print(object.run())
 
